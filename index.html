@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HELM Finances — steer your capital with a system</title>
+<meta name="description" content="Helm runs a research-grade, post-earnings-drift equity strategy with full transparency — every gate, sleeve and order, before it is placed. Modeled, not a forecast.">
+<meta name="theme-color" content="#0b0e14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%233fb6ac'/%3E%3Cg stroke='%2306231f' stroke-width='1.4' stroke-linecap='round'%3E%3Cline x1='12' y1='12' x2='12' y2='3'/%3E%3Cline x1='12' y1='12' x2='19.5' y2='7.5'/%3E%3Cline x1='12' y1='12' x2='19.5' y2='16.5'/%3E%3Cline x1='12' y1='12' x2='12' y2='21'/%3E%3Cline x1='12' y1='12' x2='4.5' y2='16.5'/%3E%3Cline x1='12' y1='12' x2='4.5' y2='7.5'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='6.6' fill='none' stroke='%2306231f' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='12' r='2.2' fill='%2306231f'/%3E%3C/svg%3E">
+<meta property="og:title" content="HELM Finances">
+<meta property="og:description" content="Steer your capital with a system, not a guess. A transparent, research-grade post-earnings-drift strategy.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://helmfinances.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{ --accent:#3fb6ac; --accent-2:#2dd4bf; }
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:#0b0e14;}
+::selection{background:rgba(63,182,172,0.28); color:#e6edf3;}
+a{color:inherit;}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px;}
+*{scrollbar-width:thin; scrollbar-color:#2a3340 transparent;}
+::-webkit-scrollbar{height:10px; width:10px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#222a33; border-radius:8px; border:2px solid #0b0e14;}
+::-webkit-scrollbar-thumb:hover{background:#39424f;}
+@keyframes helmDraw{from{stroke-dashoffset:2200;}to{stroke-dashoffset:0;}}
+@keyframes helmFade{from{opacity:0; transform:translateY(10px);}to{opacity:1; transform:none;}}
+@keyframes helmPop{from{opacity:0; transform:scale(0.6);}to{opacity:1; transform:scale(1);}}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation:none !important;}
+}
+</style>
+</head>
+<body>
+
+
+
+<div style="background:#0b0e14; color:#e6edf3; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,'Helvetica Neue',sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; overflow-x:hidden;">
+
+  <!-- ===================== TOP BAR ===================== -->
+  <header style="position:sticky; top:0; z-index:80; background:rgba(11,14,20,0.78); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid #1f2630;">
+    <div style="max-width:1160px; margin:0 auto; padding:9px 24px; min-height:64px; display:flex; align-items:center; flex-wrap:wrap; gap:12px 16px;">
+      <a href="#top" aria-label="Helm home" style="display:flex; align-items:center; gap:11px; text-decoration:none; flex-shrink:0;">
+        <span aria-hidden="true" style="width:32px; height:32px; border-radius:9px; background:linear-gradient(150deg,var(--accent-2),var(--accent)); display:grid; place-items:center; box-shadow:0 4px 14px rgba(63,182,172,0.28);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <g stroke="#06231f" stroke-width="1.5" stroke-linecap="round">
+              <line x1="12" y1="12" x2="12" y2="2.5"></line><line x1="12" y1="12" x2="20" y2="7"></line>
+              <line x1="12" y1="12" x2="20" y2="17"></line><line x1="12" y1="12" x2="12" y2="21.5"></line>
+              <line x1="12" y1="12" x2="4" y2="17"></line><line x1="12" y1="12" x2="4" y2="7"></line>
+            </g>
+            <circle cx="12" cy="12" r="7" fill="none" stroke="#06231f" stroke-width="1.6"></circle>
+            <circle cx="12" cy="12" r="2.4" fill="#06231f"></circle>
+            <g fill="#06231f"><circle cx="12" cy="2.5" r="1.3"></circle><circle cx="20" cy="7" r="1.3"></circle><circle cx="20" cy="17" r="1.3"></circle><circle cx="12" cy="21.5" r="1.3"></circle><circle cx="4" cy="17" r="1.3"></circle><circle cx="4" cy="7" r="1.3"></circle></g>
+          </svg>
+        </span>
+        <span style="display:flex; flex-direction:column; line-height:1; padding-left:2px;">
+          <span style="font-weight:600; letter-spacing:0.32em; font-size:15px; color:#e6edf3;">HELM</span>
+          <span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:11.5px; letter-spacing:0.04em; color:var(--accent-2); margin-top:3px;">Finances</span>
+        </span>
+      </a>
+
+      <nav aria-label="Page sections" style="display:flex; align-items:center; flex-wrap:wrap; gap:2px; margin-left:14px;">
+        <a href="#what" style="text-decoration:none; font-size:13.5px; color:#8b949e; padding:8px 11px; border-radius:8px;" style-hover="color:#e6edf3; background:#11161f;">What it does</a>
+        <a href="#how" style="text-decoration:none; font-size:13.5px; color:#8b949e; padding:8px 11px; border-radius:8px;" style-hover="color:#e6edf3; background:#11161f;">How it works</a>
+        <a href="#transparency" style="text-decoration:none; font-size:13.5px; color:#8b949e; padding:8px 11px; border-radius:8px;" style-hover="color:#e6edf3; background:#11161f;">Transparency</a>
+        <a href="#benchmark" style="text-decoration:none; font-size:13.5px; color:#8b949e; padding:8px 11px; border-radius:8px;" style-hover="color:#e6edf3; background:#11161f;">Performance</a>
+        <a href="#science" style="text-decoration:none; font-size:13.5px; color:#8b949e; padding:8px 11px; border-radius:8px;" style-hover="color:#e6edf3; background:#11161f;">Science</a>
+      </nav>
+
+      <div style="flex:1;"></div>
+
+      <a href="mailto:access@helmfinances.com" style="display:inline-flex; align-items:center; text-decoration:none; font-size:13.5px; font-weight:500; color:#8b949e; padding:9px 14px; border:1px solid #2a3340; border-radius:9px;" style-hover="color:#e6edf3; border-color:#39424f;">Request access</a>
+      <a href="https://app.helmfinances.com" style="display:inline-flex; align-items:center; gap:7px; text-decoration:none; font-size:13.5px; font-weight:600; color:#06231f; background:linear-gradient(150deg,var(--accent-2),var(--accent)); padding:9px 16px; border-radius:9px; box-shadow:0 4px 14px rgba(63,182,172,0.22);" style-hover="filter:brightness(1.06);">
+        Sign in
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section style="position:relative; max-width:1160px; margin:0 auto; padding:84px 24px 56px;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr)); gap:48px; align-items:center;">
+
+        <div style="min-width:0;">
+          <div style="display:inline-flex; align-items:center; gap:9px; padding:6px 12px 6px 8px; border:1px solid #1f2630; background:#11161f; border-radius:999px; margin-bottom:24px;">
+            <span style="width:7px; height:7px; border-radius:50%; background:var(--accent-2); box-shadow:0 0 0 4px rgba(63,182,172,0.16);"></span>
+            <span style="font-size:12px; color:#8b949e; letter-spacing:0.01em;">Post-earnings drift, run as a system · <span style="color:#e6edf3;">invite-only</span></span>
+          </div>
+
+          <h1 style="margin:0; font-size:clamp(34px,5vw,54px); line-height:1.04; font-weight:600; letter-spacing:-0.025em; color:#f3f7fa; text-wrap:balance;">Steer your capital with a&nbsp;system, not a guess.</h1>
+
+          <p style="margin:22px 0 0; font-size:clamp(15px,1.6vw,18px); line-height:1.6; color:#8b949e; max-width:520px; text-wrap:pretty;">Helm harvests <strong style="color:#c8d2dc; font-weight:600;">post-earnings-announcement drift</strong> across 20 large-cap names — and shows you every gate, sizing step and broker order <em style="color:#c8d2dc; font-style:normal;">before</em> anything is placed. You hold the helm; the strategy does the rowing.</p>
+
+          <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:32px;">
+            <a href="https://app.helmfinances.com" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-size:15px; font-weight:600; color:#06231f; background:linear-gradient(150deg,var(--accent-2),var(--accent)); padding:13px 22px; border-radius:11px; box-shadow:0 6px 22px rgba(63,182,172,0.26);" style-hover="filter:brightness(1.06);">
+              Sign in
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="#how" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-size:15px; font-weight:500; color:#c8d2dc; background:transparent; padding:13px 20px; border:1px solid #2a3340; border-radius:11px;" style-hover="border-color:#39424f; color:#e6edf3;">How it works</a>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:26px; margin-top:36px;">
+            <div><div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:22px; font-weight:600; color:#e6edf3;">20</div><div style="font-size:12px; color:#5d6673; margin-top:2px;">large-cap universe</div></div>
+            <div style="width:1px; background:#1f2630;"></div>
+            <div><div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:22px; font-weight:600; color:#e6edf3;">~60</div><div style="font-size:12px; color:#5d6673; margin-top:2px;">session drift hold</div></div>
+            <div style="width:1px; background:#1f2630;"></div>
+            <div><div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:22px; font-weight:600; color:var(--accent-2);">100%</div><div style="font-size:12px; color:#5d6673; margin-top:2px;">decisions shown</div></div>
+          </div>
+        </div>
+
+        <!-- signature climbing drift curve -->
+        <div style="min-width:0;">
+          <figure style="margin:0; background:linear-gradient(180deg,#11161f,#0e131b); border:1px solid #1f2630; border-radius:18px; padding:18px 18px 14px; box-shadow:0 30px 60px -28px rgba(0,0,0,0.7);">
+            <figcaption style="display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
+              <span style="font-size:13px; color:#e6edf3; font-weight:600;">Helm&nbsp;v4.1 model</span>
+              <span style="font-size:11px; color:#5d6673; font-family:'JetBrains Mono',monospace;">Growth of $10,000 &middot; 2001&ndash;2026</span>
+            </figcaption>
+            <div id="heroChart"></div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:8px 4px 2px; border-top:1px solid #1f2630; margin-top:8px;">
+              <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#8b949e;"><span style="width:14px; height:9px; border-radius:2px; background:rgba(248,113,113,0.16);"></span>crisis periods</span>
+              <span style="flex:1;"></span>
+              <span style="font-size:10.5px; color:#5d6673;">backtest &mdash; not a forecast</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- divider drift line -->
+    <div aria-hidden="true" style="max-width:1160px; margin:0 auto; padding:0 24px;">
+      <svg viewBox="0 0 1200 48" preserveAspectRatio="none" style="width:100%; height:30px; display:block; opacity:0.5;">
+        <path d="M0,40 L150,38 L300,34 L450,36 L600,28 L750,26 L900,20 L1050,14 L1200,8" fill="none" stroke="var(--accent)" stroke-opacity="0.4" stroke-width="1.4" stroke-linecap="round"></path>
+      </svg>
+    </div>
+
+    <!-- ===================== WHAT HELM DOES ===================== -->
+    <section id="what" style="max-width:1160px; margin:0 auto; padding:76px 24px;">
+      <div style="margin-bottom:40px;">
+        <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">What Helm does</span>
+        <h2 style="margin:12px 0 0; font-size:clamp(26px,3.2vw,34px); font-weight:600; letter-spacing:-0.02em; color:#f3f7fa; max-width:640px; text-wrap:balance;">A research-grade strategy you can actually steer.</h2>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:18px;">
+
+        <article style="background:#11161f; border:1px solid #1f2630; border-radius:16px; padding:26px 24px;">
+          <div style="width:44px; height:44px; border-radius:12px; background:rgba(63,182,172,0.1); border:1px solid rgba(63,182,172,0.25); display:grid; place-items:center; margin-bottom:18px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+          </div>
+          <h3 style="margin:0; font-size:18px; font-weight:600; color:#e6edf3;">Harvests the drift</h3>
+          <p style="margin:10px 0 0; font-size:14px; line-height:1.6; color:#8b949e; text-wrap:pretty;">After a company beats earnings, its stock tends to keep drifting for ~60 trading days. Helm enters the session after a positive surprise across a fixed 20-name large-cap universe and rides that window.</p>
+        </article>
+
+        <article style="background:#11161f; border:1px solid #1f2630; border-radius:16px; padding:26px 24px;">
+          <div style="width:44px; height:44px; border-radius:12px; background:rgba(63,182,172,0.1); border:1px solid rgba(63,182,172,0.25); display:grid; place-items:center; margin-bottom:18px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"></line><line x1="10" x2="3" y1="4" y2="4"></line><line x1="21" x2="12" y1="12" y2="12"></line><line x1="8" x2="3" y1="12" y2="12"></line><line x1="21" x2="16" y1="20" y2="20"></line><line x1="12" x2="3" y1="20" y2="20"></line><line x1="14" x2="14" y1="2" y2="6"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="16" x2="16" y1="18" y2="22"></line></svg>
+          </div>
+          <h3 style="margin:0; font-size:18px; font-weight:600; color:#e6edf3;">Sizes &amp; de-risks automatically</h3>
+          <p style="margin:10px 0 0; font-size:14px; line-height:1.6; color:#8b949e; text-wrap:pretty;">Risk-parity sleeves and a 10% volatility-target overlay set each position — blended with a mean-reversion sleeve. No name runs away from you; exits fire on time or at a −15% hard stop.</p>
+        </article>
+
+        <article style="background:#11161f; border:1px solid #1f2630; border-radius:16px; padding:26px 24px;">
+          <div style="width:44px; height:44px; border-radius:12px; background:rgba(63,182,172,0.1); border:1px solid rgba(63,182,172,0.25); display:grid; place-items:center; margin-bottom:18px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </div>
+          <h3 style="margin:0; font-size:18px; font-weight:600; color:#e6edf3;">Total transparency</h3>
+          <p style="margin:10px 0 0; font-size:14px; line-height:1.6; color:#8b949e; text-wrap:pretty;">See the gate-by-gate decision graph, the live drift timeline, the exact sizing chain, the current model state and the broker order plan — <strong style="color:#c8d2dc; font-weight:600;">before</strong> anything is placed. Nothing is a black box.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== HOW HELM COMPARES (moved up) ===================== -->
+    <section id="compare" style="max-width:1160px; margin:0 auto; padding:8px 24px 84px;">
+      <div style="margin-bottom:18px;">
+        <h3 style="margin:0; font-size:22px; font-weight:600; letter-spacing:-0.01em; color:#e6edf3;">How Helm compares</h3>
+        <p style="margin:9px 0 0; font-size:15px; line-height:1.6; color:#8b949e; max-width:740px; text-wrap:pretty;">Where a rules-based PEAD strategy sits among well-known benchmarks, ranked by <strong style="color:#c8d2dc; font-weight:600;">Sharpe</strong> (return per unit of risk). Periods, fees and methods differ — <em style="font-style:normal; color:#c8d2dc;">context, not a ranking</em>.</p>
+      </div>
+      <div style="overflow-x:auto; border:1px solid #1f2630; border-radius:16px; background:#11161f;">
+        <table style="width:100%; min-width:840px; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#5d6673; font-weight:500; padding:14px 18px; background:#0e131b; border-bottom:1px solid #1f2630;">Strategy</th>
+              <th style="text-align:right; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#5d6673; font-weight:500; padding:14px 18px; background:#0e131b; border-bottom:1px solid #1f2630;">CAGR</th>
+              <th style="text-align:left; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#5d6673; font-weight:500; padding:14px 18px; background:#0e131b; border-bottom:1px solid #1f2630; min-width:180px;">Sharpe</th>
+              <th style="text-align:right; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#5d6673; font-weight:500; padding:14px 18px; background:#0e131b; border-bottom:1px solid #1f2630;">Sortino</th>
+              <th style="text-align:right; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#5d6673; font-weight:500; padding:14px 18px; background:#0e131b; border-bottom:1px solid #1f2630;">Max DD</th>
+              <th style="text-align:left; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#5d6673; font-weight:500; padding:14px 18px; background:#0e131b; border-bottom:1px solid #1f2630;">Period · basis</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr style="">
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="font-size:14.5px; color:#c8d2dc;">Renaissance Medallion<sup style="color:#5d6673;">1</sup></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">39%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc; width:40px;">2.0</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:83%; background:#8b97a3; border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#5d6673;">—</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#8b949e;">minimal</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">1988–2018 net · reported</td>
+              </tr>
+              <tr style="background:rgba(63,182,172,0.13);">
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; border-left:3px solid var(--accent-2); padding-left:15px;"><span style="display:inline-flex; align-items:center; gap:9px; white-space:nowrap;"><span style="width:7px; height:7px; border-radius:50%; background:var(--accent-2); flex:none;"></span><strong style="font-size:15px; font-weight:700; color:var(--accent-2); white-space:nowrap;">Helm v4.1</strong><span style="font-size:11px; font-weight:600; letter-spacing:0.04em; color:var(--accent-2); background:rgba(63,182,172,0.16); border:1px solid rgba(63,182,172,0.4); padding:2px 8px; border-radius:6px; white-space:nowrap;">your strategy</span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#e6edf3;">16.0%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#e6edf3; width:40px;">1.77</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:73%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#e6edf3;">2.64</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#f87171;">−11.0%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">2001–2026 · backtest</td>
+              </tr>
+              <tr style="">
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="font-size:14.5px; color:#c8d2dc;">Berkshire / Buffett<sup style="color:#5d6673;">2</sup></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">20%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc; width:40px;">0.79</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:33%; background:#8b97a3; border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#5d6673;">—</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#f87171;">−44%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">1976–2017 · AQR study</td>
+              </tr>
+              <tr style="">
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="font-size:14.5px; color:#c8d2dc;">S&amp;P 500 buy &amp; hold<sup style="color:#5d6673;">4</sup></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">10.2%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc; width:40px;">0.61</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:25%; background:#8b97a3; border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">0.86</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#f87171;">−55%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">2001–2026 · benchmark</td>
+              </tr>
+              <tr style="">
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="font-size:14.5px; color:#c8d2dc;">60 / 40 portfolio</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">6.5%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc; width:40px;">0.60</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:25%; background:#8b97a3; border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">0.82</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#f87171;">−30%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">2001–2026 · blend</td>
+              </tr>
+              <tr style="">
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="font-size:14.5px; color:#c8d2dc;">Nasdaq-100 (QQQ)</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">10.5%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc; width:40px;">0.55</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:23%; background:#8b97a3; border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">0.72</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#f87171;">−53%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">2001–2026 · index</td>
+              </tr>
+              <tr style="">
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="font-size:14.5px; color:#8b949e;">Avg equity hedge fund<sup style="color:#5d6673;">3</sup></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#8b949e;">6–8%</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#8b949e; width:40px;">0.50</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:21%; background:#39424f; border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#5d6673;">—</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#5d6673;">—</span></td>
+                <td style="padding:15px 18px; border-bottom:1px solid #1f2630; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">industry estimate</td>
+              </tr>
+              <tr style="">
+                <td style="padding:15px 18px;"><span style="font-size:14.5px; color:#c8d2dc;">US Aggregate bonds</span></td>
+                <td style="padding:15px 18px; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">3.5%</span></td>
+                <td style="padding:15px 18px;"><span style="display:flex; align-items:center; gap:11px;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc; width:40px;">0.40</span><span style="flex:1; height:7px; background:#0e131b; border-radius:4px; overflow:hidden;"><span style="display:block; height:100%; width:17%; background:#8b97a3; border-radius:4px;"></span></span></span></td>
+                <td style="padding:15px 18px; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#c8d2dc;">0.55</span></td>
+                <td style="padding:15px 18px; text-align:right;"><span style="font-family:'JetBrains Mono',monospace; font-size:15px; color:#f87171;">−17%</span></td>
+                <td style="padding:15px 18px; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#8b949e;">2001–2026 · index</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px; font-size:12px; line-height:1.6; color:#5d6673; max-width:920px;">
+        <p style="margin:0 0 5px;"><sup>1</sup> Medallion (Renaissance Technologies): ~66% gross / ~39% net per year, 1988–2018; reported no losing year, so realized drawdown was minimal. Closed to outside capital. <sup>2</sup> Berkshire Hathaway Sharpe 0.79 vs market 0.49 — Frazzini, Kabiller &amp; Pedersen, <em style="font-style:italic; color:#8b949e;">Buffett's Alpha</em> (1976–2017). <sup>3</sup> Rough industry estimate; varies widely by fund and period. <sup>4</sup> S&amp;P 500 figures are Helm's own <strong style="color:#8b949e;">backtested benchmark</strong> over the same 2001–2026 window as Helm (a like-for-like comparison; CAGR 10.2%, Sharpe 0.61, Sortino 0.86, max DD −55.2%). Official index returns over other periods and dividend treatments differ — see <a href="https://www.spglobal.com/spdji/en/indices/equity/sp-500/#overview" target="_blank" rel="noopener noreferrer" style="color:var(--accent-2); text-decoration:underline;">S&amp;P Dow Jones Indices</a>.</p>
+        <p style="margin:6px 0 0; color:#454e5a;">Index, blend and bond figures are approximate over 2001–2026 and vary by data source. Other funds' figures are reported or third-party estimates over different periods, fees and methodologies — <strong style="color:#5d6673; font-weight:600;">not directly comparable</strong>. Helm figures are modeled / backtested and <strong style="color:#5d6673; font-weight:600;">not a forecast</strong>.</p>
+      </div>
+    </section>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section id="how" style="background:#0d121a; border-top:1px solid #161c25; border-bottom:1px solid #161c25;">
+      <div style="max-width:1160px; margin:0 auto; padding:76px 24px;">
+        <div style="margin-bottom:40px;">
+          <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">How it works</span>
+          <h2 style="margin:12px 0 0; font-size:clamp(26px,3.2vw,34px); font-weight:600; letter-spacing:-0.02em; color:#f3f7fa; max-width:680px; text-wrap:balance;">One position, four disciplined steps.</h2>
+        </div>
+
+        <ol style="list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:14px;">
+          <li style="position:relative; background:#11161f; border:1px solid #1f2630; border-radius:14px; padding:22px 20px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+              <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; color:#5d6673;">01</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><rect x="7" y="10" width="3" height="7" rx="0.5"></rect><rect x="13" y="6" width="3" height="11" rx="0.5"></rect></svg>
+            </div>
+            <h3 style="margin:0; font-size:15.5px; font-weight:600; color:#e6edf3;">Earnings beat</h3>
+            <p style="margin:8px 0 0; font-size:13px; line-height:1.55; color:#8b949e;">A name in the universe posts a positive earnings surprise.</p>
+          </li>
+          <li style="position:relative; background:#11161f; border:1px solid #1f2630; border-radius:14px; padding:22px 20px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+              <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; color:#5d6673;">02</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg>
+            </div>
+            <h3 style="margin:0; font-size:15.5px; font-weight:600; color:#e6edf3;">Enter +1 session</h3>
+            <p style="margin:8px 0 0; font-size:13px; line-height:1.55; color:#8b949e;">Go long at the next close — sized by the risk-parity &amp; vol-target rules.</p>
+          </li>
+          <li style="position:relative; background:#11161f; border:1px solid #1f2630; border-radius:14px; padding:22px 20px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+              <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; color:#5d6673;">03</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            </div>
+            <h3 style="margin:0; font-size:15.5px; font-weight:600; color:#e6edf3;">Ride the ~60-day drift</h3>
+            <p style="margin:8px 0 0; font-size:13px; line-height:1.55; color:#8b949e;">Hold through the post-earnings drift window, tracked session by session.</p>
+          </li>
+          <li style="position:relative; background:#11161f; border:1px solid #1f2630; border-radius:14px; padding:22px 20px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+              <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; color:#5d6673;">04</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            </div>
+            <h3 style="margin:0; font-size:15.5px; font-weight:600; color:#e6edf3;">Exit on time / −15% stop</h3>
+            <p style="margin:8px 0 0; font-size:13px; line-height:1.55; color:#8b949e;">Close at ~60 sessions, or earlier if the −15% hard stop is hit.</p>
+          </li>
+        </ol>
+
+        <p style="margin:22px 0 0; font-size:12.5px; line-height:1.6; color:#5d6673; max-width:760px;"><strong style="color:#8b949e; font-weight:600;">Sleeves.</strong> PEAD is the executable long book that runs on your broker today. RSI2 mean-reversion, a regime filter and a parabolic short hedge are <span style="color:#8b949e;">model-only</span> for now — visible in research, not yet placed live.</p>
+      </div>
+    </section>
+
+    <!-- ===================== NOTHING IS A BLACK BOX ===================== -->
+    <section id="transparency" style="max-width:1160px; margin:0 auto; padding:76px 24px;">
+      <div style="margin-bottom:40px; max-width:680px;">
+        <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Transparency</span>
+        <h2 style="margin:12px 0 0; font-size:clamp(26px,3.2vw,34px); font-weight:600; letter-spacing:-0.02em; color:#f3f7fa; text-wrap:balance;">Nothing is a black box.</h2>
+        <p style="margin:14px 0 0; font-size:15px; line-height:1.6; color:#8b949e; text-wrap:pretty;">Every position carries its full reasoning — the gates it passed, the model state that sized it, and where it sits in the drift calendar. This is what you see in the app, on every name.</p>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start;">
+
+        <!-- decision graph mock — PLACEHOLDER: swap for a real product screenshot -->
+        <article style="flex:1 1 460px; background:linear-gradient(180deg,#12222a,#11161f 26%); border:1px solid #1f2630; border-radius:16px; padding:20px; min-width:0;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+            <h3 style="margin:0; font-size:14.5px; font-weight:600; color:#e6edf3;">Why this decision</h3>
+            <span style="flex:1;"></span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; color:#c8d2dc;">AAPL</span>
+            <span style="font-size:10px; font-weight:700; letter-spacing:0.06em; color:#06231f; background:linear-gradient(150deg,var(--accent-2),var(--accent)); padding:3px 9px; border-radius:6px; box-shadow:0 2px 10px rgba(63,182,172,0.4);">OPEN LONG</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673; margin-bottom:16px;">
+            <span>earnings 2026-04-30</span><span style="color:#26323f;">·</span><span style="color:#34d399;">+3.5% surprise</span><span style="color:#26323f;">·</span><span>day 28 / 60</span>
+          </div>
+          <div style="position:relative; padding-left:34px;">
+            <div style="position:absolute; left:15px; top:16px; bottom:16px; width:2px; background:linear-gradient(180deg,#34d399,var(--accent) 70%,var(--accent-2));"></div>
+            <!-- gate rows -->
+            <div style="position:relative; display:flex; align-items:center; gap:12px; padding:11px 13px; margin-bottom:8px; background:rgba(52,211,153,0.07); border:1px solid rgba(52,211,153,0.22); border-radius:10px;">
+              <span style="position:absolute; left:-27px; width:18px; height:18px; border-radius:50%; background:#34d399; display:grid; place-items:center; box-shadow:0 0 0 4px rgba(52,211,153,0.12);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+              <span style="font-size:13px; color:#e6edf3;">Positive surprise → long</span><span style="flex:1;"></span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600; color:#34d399;">+3.5%</span>
+            </div>
+            <div style="position:relative; display:flex; align-items:center; gap:12px; padding:11px 13px; margin-bottom:8px; background:rgba(52,211,153,0.07); border:1px solid rgba(52,211,153,0.22); border-radius:10px;">
+              <span style="position:absolute; left:-27px; width:18px; height:18px; border-radius:50%; background:#34d399; display:grid; place-items:center; box-shadow:0 0 0 4px rgba(52,211,153,0.12);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+              <span style="font-size:13px; color:#e6edf3;">Liquidity ≥ $1M/day</span><span style="flex:1;"></span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#8b949e;">pass</span>
+            </div>
+            <div style="position:relative; display:flex; align-items:center; gap:12px; padding:11px 13px; margin-bottom:8px; background:rgba(52,211,153,0.07); border:1px solid rgba(52,211,153,0.22); border-radius:10px;">
+              <span style="position:absolute; left:-27px; width:18px; height:18px; border-radius:50%; background:#34d399; display:grid; place-items:center; box-shadow:0 0 0 4px rgba(52,211,153,0.12);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+              <span style="font-size:13px; color:#e6edf3;">In the executable target book</span><span style="flex:1;"></span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#8b949e;">yes</span>
+            </div>
+            <div style="position:relative; display:flex; align-items:center; gap:12px; padding:11px 13px; margin-bottom:8px; background:#0e131b; border:1px solid #1f2630; border-radius:10px;">
+              <span style="position:absolute; left:-27px; width:18px; height:18px; border-radius:50%; background:#11161f; border:2px solid var(--accent); display:grid; place-items:center; box-shadow:0 0 0 4px rgba(63,182,172,0.1);"><span style="width:5px; height:5px; border-radius:50%; background:var(--accent);"></span></span>
+              <span style="font-size:13px; color:#e6edf3;">Drift window · 60 sessions</span><span style="flex:1;"></span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#8b949e;">32d left · mid</span>
+            </div>
+            <div style="position:relative; display:flex; align-items:center; gap:12px; padding:14px 13px; background:linear-gradient(120deg,rgba(63,182,172,0.2),rgba(45,212,191,0.05)); border:1px solid rgba(63,182,172,0.5); border-radius:11px; box-shadow:0 6px 22px -8px rgba(63,182,172,0.4);">
+              <span style="position:absolute; left:-27px; width:18px; height:18px; border-radius:50%; background:linear-gradient(150deg,var(--accent-2),var(--accent)); display:grid; place-items:center; box-shadow:0 0 0 4px rgba(63,182,172,0.18);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+              <span style="font-size:14px; font-weight:600; color:#e6edf3; letter-spacing:0.01em;">OPEN LONG</span><span style="flex:1;"></span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--accent-2);">10.0%</span>
+            </div>
+          </div>
+          <p style="margin:15px 2px 0; font-size:11.5px; color:#5d6673; line-height:1.5;">The same gate chain renders for every name — pass, fail or hold — so you always know <em style="font-style:normal; color:#8b949e;">why</em>.</p>
+        </article>
+
+        <div style="flex:1 1 340px; min-width:0; display:flex; flex-direction:column; gap:18px;">
+        <!-- model state mock — PLACEHOLDER: swap for a real product screenshot -->
+        <article style="background:#11161f; border:1px solid #1f2630; border-radius:16px; padding:20px; min-width:0;">
+          <h3 style="margin:0 0 14px; font-size:14.5px; font-weight:600; color:#e6edf3;">Model state</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="display:inline-flex; align-items:center; gap:7px; font-size:12px; color:#8b949e; background:#0e131b; border:1px solid #1f2630; padding:7px 11px; border-radius:8px;">VOL-TARGET <span style="font-family:'JetBrains Mono',monospace; color:#e6edf3; font-weight:600;">100%</span></span>
+            <span style="display:inline-flex; align-items:center; gap:7px; font-size:12px; color:#8b949e; background:#0e131b; border:1px solid #1f2630; padding:7px 11px; border-radius:8px;">PEAD/RSI2 <span style="font-family:'JetBrains Mono',monospace; color:#e6edf3; font-weight:600;">45%/55%</span></span>
+            <span style="display:inline-flex; align-items:center; gap:7px; font-size:12px; color:#8b949e; background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.25); padding:7px 11px; border-radius:8px;">REGIME <span style="font-family:'JetBrains Mono',monospace; color:#34d399; font-weight:600;">bull</span></span>
+            <span style="display:inline-flex; align-items:center; gap:7px; font-size:12px; color:#8b949e; background:#0e131b; border:1px solid #1f2630; padding:7px 11px; border-radius:8px;">PER NAME <span style="font-family:'JetBrains Mono',monospace; color:#e6edf3; font-weight:600;">4.5%</span></span>
+            <span style="display:inline-flex; align-items:center; gap:7px; font-size:12px; color:#8b949e; background:#0e131b; border:1px solid #1f2630; padding:7px 11px; border-radius:8px;">GROSS <span style="font-family:'JetBrains Mono',monospace; color:#e6edf3; font-weight:600;">45%</span> · cash <span style="font-family:'JetBrains Mono',monospace; color:#e6edf3; font-weight:600;">55%</span></span>
+          </div>
+          <p style="margin:13px 2px 0; font-size:11.5px; color:#5d6673; line-height:1.5;">The exact sizing chain that turns a signal into a target weight.</p>
+        </article>
+
+        <!-- drift Gantt mock — PLACEHOLDER: swap for a real product screenshot -->
+        <article style="background:#11161f; border:1px solid #1f2630; border-radius:16px; padding:20px; min-width:0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+            <h3 style="margin:0; font-size:14.5px; font-weight:600; color:#e6edf3;">Drift timeline</h3>
+            <span style="font-size:11px; color:#5d6673;">entry → forecast close · 60 sessions</span>
+          </div>
+
+          <div style="position:relative;">
+            <!-- gridlines + today overlay, aligned to the track column -->
+            <div style="position:absolute; left:54px; right:60px; top:22px; bottom:42px; pointer-events:none;">
+              <div style="position:absolute; left:0;   top:0; bottom:0; width:1px; background:#1a212b;"></div>
+              <div style="position:absolute; left:25%; top:0; bottom:0; width:1px; background:#1a212b;"></div>
+              <div style="position:absolute; left:50%; top:0; bottom:0; width:1px; background:#1a212b;"></div>
+              <div style="position:absolute; left:75%; top:0; bottom:0; width:1px; background:#1a212b;"></div>
+              <div style="position:absolute; right:0;  top:0; bottom:0; width:1px; background:#1a212b;"></div>
+              <div style="position:absolute; left:60%; top:-12px; bottom:-2px; width:0; border-left:1.5px dashed rgba(45,212,191,0.6);"></div>
+              <span style="position:absolute; left:60%; top:-22px; transform:translateX(-50%); font-size:9px; font-weight:600; color:#06231f; background:var(--accent-2); padding:1px 6px; border-radius:5px; font-family:'JetBrains Mono',monospace;">today</span>
+            </div>
+
+            <!-- month axis -->
+            <div style="display:grid; grid-template-columns:44px 1fr 50px; gap:10px; margin-bottom:14px;">
+              <span></span>
+              <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:9.5px; color:#5d6673;"><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span></div>
+              <span></span>
+            </div>
+
+            <!-- lanes -->
+            <div style="display:grid; grid-template-columns:44px 1fr 50px; gap:10px 10px; align-items:center;">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#c8d2dc;">NKE</span>
+              <span style="position:relative; height:16px;"><span style="position:absolute; left:4%; width:56%; top:0; bottom:0; background:linear-gradient(90deg,#2ba776,#34d399); border-radius:8px;"></span><span style="position:absolute; left:60%; width:18%; top:0; bottom:0; border-radius:0 8px 8px 0; background:repeating-linear-gradient(45deg,rgba(52,211,153,0.32) 0 3px,rgba(52,211,153,0.05) 3px 7px);"></span></span>
+              <span style="text-align:right; font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; color:#34d399;">+1.7%<span style="display:block; font-weight:400; font-size:9.5px; color:#5d6673;">11d</span></span>
+
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#c8d2dc;">AAPL</span>
+              <span style="position:relative; height:16px;"><span style="position:absolute; left:4%; width:56%; top:0; bottom:0; background:linear-gradient(90deg,#2ba776,#34d399); border-radius:8px;"></span><span style="position:absolute; left:60%; width:26%; top:0; bottom:0; border-radius:0 8px 8px 0; background:repeating-linear-gradient(45deg,rgba(52,211,153,0.32) 0 3px,rgba(52,211,153,0.05) 3px 7px);"></span></span>
+              <span style="text-align:right; font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; color:#34d399;">+5.3%<span style="display:block; font-weight:400; font-size:9.5px; color:#5d6673;">32d</span></span>
+
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#c8d2dc;">AMZN</span>
+              <span style="position:relative; height:16px;"><span style="position:absolute; left:4%; width:56%; top:0; bottom:0; background:linear-gradient(90deg,#c9554f,#f87171); border-radius:8px;"></span><span style="position:absolute; left:60%; width:26%; top:0; bottom:0; border-radius:0 8px 8px 0; background:repeating-linear-gradient(45deg,rgba(248,113,113,0.32) 0 3px,rgba(248,113,113,0.05) 3px 7px);"></span></span>
+              <span style="text-align:right; font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; color:#f87171;">−11.1%<span style="display:block; font-weight:400; font-size:9.5px; color:#5d6673;">31d</span></span>
+
+              <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#c8d2dc;">XOM</span>
+              <span style="position:relative; height:16px;"><span style="position:absolute; left:4%; width:56%; top:0; bottom:0; background:linear-gradient(90deg,#c9554f,#f87171); border-radius:8px;"></span><span style="position:absolute; left:60%; width:20%; top:0; bottom:0; border-radius:0 8px 8px 0; background:repeating-linear-gradient(45deg,rgba(248,113,113,0.32) 0 3px,rgba(248,113,113,0.05) 3px 7px);"></span></span>
+              <span style="text-align:right; font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; color:#f87171;">−3.7%<span style="display:block; font-weight:400; font-size:9.5px; color:#5d6673;">32d</span></span>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:16px; padding-top:12px; border-top:1px solid #1f2630;">
+              <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#8b949e;"><span style="width:14px; height:8px; border-radius:3px; background:#34d399;"></span>earning</span>
+              <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#8b949e;"><span style="width:14px; height:8px; border-radius:3px; background:#f87171;"></span>losing</span>
+              <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#8b949e;"><span style="width:14px; height:8px; border-radius:3px; background:repeating-linear-gradient(45deg,rgba(139,148,158,0.5) 0 3px,transparent 3px 7px);"></span>forecast</span>
+            </div>
+          </div>
+        </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BUILT LIKE RESEARCH ===================== -->
+    <section id="research" style="background:#0d121a; border-top:1px solid #161c25; border-bottom:1px solid #161c25;">
+      <div style="max-width:1160px; margin:0 auto; padding:76px 24px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:40px; align-items:center;">
+          <div>
+            <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Built like research</span>
+            <h2 style="margin:12px 0 0; font-size:clamp(26px,3.2vw,34px); font-weight:600; letter-spacing:-0.02em; color:#f3f7fa; text-wrap:balance;">A lab notebook, not a tip service.</h2>
+            <p style="margin:16px 0 0; font-size:15px; line-height:1.65; color:#8b949e; text-wrap:pretty;">Every rule earns its place: <strong style="color:#c8d2dc; font-weight:600;">hypothesis → test → paired-bootstrap validation</strong>, logged with a dated verdict. The strategy's simulated track record, version lineage and experiment log all live in the app — newest first, nothing hidden.</p>
+
+            <div style="display:flex; align-items:center; gap:10px; margin-top:26px; flex-wrap:wrap;">
+              <span style="display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:#8b949e; background:#11161f; border:1px solid #1f2630; padding:8px 12px; border-radius:9px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--accent-2);"></span>hypothesis</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#39424f" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              <span style="display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:#8b949e; background:#11161f; border:1px solid #1f2630; padding:8px 12px; border-radius:9px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--accent-2);"></span>test</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#39424f" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              <span style="display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:#8b949e; background:#11161f; border:1px solid #1f2630; padding:8px 12px; border-radius:9px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--accent-2);"></span>validation</span>
+            </div>
+          </div>
+
+          <div style="background:linear-gradient(180deg,#11161f,#0e131b); border:1px solid #1f2630; border-radius:18px; padding:30px; box-shadow:0 30px 60px -28px rgba(0,0,0,0.7);">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+              <span style="font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#8b949e;">Sortino ratio</span>
+              <span style="font-size:10px; font-weight:700; letter-spacing:0.05em; color:#d6a83a; background:rgba(214,168,58,0.14); border:1px solid rgba(214,168,58,0.4); padding:3px 8px; border-radius:999px;">MODELED</span>
+            </div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:64px; font-weight:600; letter-spacing:-0.02em; color:#e6edf3; line-height:1;">2.6</div>
+            <p style="margin:14px 0 0; font-size:13px; line-height:1.55; color:#8b949e;">Return per unit of downside risk on the v4.1 model, 2001–2026 backtest.</p>
+            <div style="margin-top:18px; padding-top:16px; border-top:1px solid #1f2630; display:flex; gap:22px; flex-wrap:wrap;">
+              <div><div style="font-family:'JetBrains Mono',monospace; font-size:17px; color:#e6edf3;">16.0%</div><div style="font-size:11px; color:#5d6673; margin-top:2px;">CAGR · modeled</div></div>
+              <div><div style="font-family:'JetBrains Mono',monospace; font-size:17px; color:#f87171;">−11.0%</div><div style="font-size:11px; color:#5d6673; margin-top:2px;">max drawdown</div></div>
+            </div>
+            <p style="margin:16px 0 0; font-size:11px; line-height:1.5; color:#5d6673;">Modeled / backtested figures — <strong style="color:#8b949e; font-weight:600;">not a forecast</strong> and not a promise of future results.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BENCHMARK (placeholder) ===================== -->
+    <section id="benchmark" style="max-width:1160px; margin:0 auto; padding:76px 24px;">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:24px;">
+        <div style="max-width:680px;">
+          <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Performance</span>
+          <h2 style="margin:12px 0 0; font-size:clamp(26px,3.2vw,34px); font-weight:600; letter-spacing:-0.02em; color:#f3f7fa; text-wrap:balance;">Helm&nbsp;v4.1 vs the S&amp;P&nbsp;500.</h2>
+          <p style="margin:14px 0 0; font-size:15px; line-height:1.6; color:#8b949e; text-wrap:pretty;">A $10k investment, 2001–2026, in the v4.1 model versus a buy-and-hold S&amp;P&nbsp;500 baseline — risk-adjusted, on a linear scale.</p>
+        </div>
+        <span style="display:inline-flex; align-items:center; gap:7px; font-size:10.5px; font-weight:600; letter-spacing:0.05em; color:#d6a83a; background:rgba(214,168,58,0.12); border:1px solid rgba(214,168,58,0.4); padding:5px 11px; border-radius:999px;">Backtest · 2001–2026</span>
+      </div>
+
+      <!-- stat cards -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,158px),1fr)); gap:12px; margin-bottom:16px;">
+        <div style="background:#11161f; border:1px solid #1f2630; border-radius:13px; padding:15px 16px;"><div style="font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:#5d6673;">Final value</div><div style="font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:600; color:#e6edf3; margin-top:9px;">$378,199</div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#5d6673; margin-top:4px;">S&amp;P 500 · $106,367</div></div>
+        <div style="background:#11161f; border:1px solid #1f2630; border-radius:13px; padding:15px 16px;"><div style="font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:#5d6673;">CAGR</div><div style="font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:600; color:#e6edf3; margin-top:9px;">16.0%</div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#5d6673; margin-top:4px;">S&amp;P 500 · 10.2%</div></div>
+        <div style="background:#11161f; border:1px solid #1f2630; border-radius:13px; padding:15px 16px;"><div style="font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:#5d6673;">Sortino</div><div style="font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:600; color:#e6edf3; margin-top:9px;">2.64</div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#5d6673; margin-top:4px;">S&amp;P 500 · 0.86</div></div>
+        <div style="background:#11161f; border:1px solid #1f2630; border-radius:13px; padding:15px 16px;"><div style="font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:#5d6673;">Sharpe</div><div style="font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:600; color:#e6edf3; margin-top:9px;">1.77</div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#5d6673; margin-top:4px;">S&amp;P 500 · 0.61</div></div>
+        <div style="background:#11161f; border:1px solid #1f2630; border-radius:13px; padding:15px 16px;"><div style="font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:#5d6673;">Max drawdown</div><div style="font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:600; color:#f87171; margin-top:9px;">−11.0%</div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#5d6673; margin-top:4px;">S&amp;P 500 · −55%</div></div>
+        <div style="background:#11161f; border:1px solid #1f2630; border-radius:13px; padding:15px 16px;"><div style="font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:#5d6673;">Calmar</div><div style="font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:600; color:#e6edf3; margin-top:9px;">1.45</div><div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#5d6673; margin-top:4px;">S&amp;P 500 · 0.18</div></div>
+      </div>
+
+      <!-- chart -->
+      <figure data-source="benchmark/v4-vs-spx" style="margin:0; background:linear-gradient(180deg,#11161f,#0e131b); border:1px solid #1f2630; border-radius:16px; padding:20px 20px 14px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+          <div>
+            <figcaption style="font-size:14px; font-weight:600; color:#e6edf3;">Helm&nbsp;v4.1 vs S&amp;P&nbsp;500 &mdash; real backtest</figcaption>
+            <p style="margin:4px 0 0; font-size:12px; color:#5d6673;">Growth of $10k + drawdown &middot; 2001&ndash;2026 &middot; daily data</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div role="group" aria-label="Switch dollar or percent axis" style="display:inline-flex; border:1px solid #2a3340; border-radius:8px; overflow:hidden;">
+              <button id="tgDollar" type="button" aria-label="Show dollar value" data-base="font:600 12.5px/1 'JetBrains Mono',monospace; border:0; padding:6px 13px; cursor:pointer;">$</button>
+              <button id="tgPct" type="button" aria-label="Show percent return" data-base="font:600 12.5px/1 'JetBrains Mono',monospace; border:0; padding:6px 13px; cursor:pointer; border-left:1px solid #2a3340;">%</button>
+            </div>
+            <span style="display:inline-flex; align-items:center; gap:7px; font-size:11.5px; color:#8b949e;"><span style="width:18px; height:3px; border-radius:2px; background:var(--accent-2);"></span>Helm&nbsp;v4.1</span>
+            <span style="display:inline-flex; align-items:center; gap:7px; font-size:11.5px; color:#8b949e;"><span style="width:18px; height:3px; border-radius:2px; background:#9aa6b2;"></span>S&amp;P&nbsp;500</span>
+          </div>
+        </div>
+        <div id="perfChart"></div>
+        <p style="margin:12px 4px 0; font-size:11px; color:#5d6673; line-height:1.5; text-wrap:pretty;">Real backtest on daily data, 2001&ndash;2026 (Helm v4.1 model vs SPY total return). Lower panel = drawdown; per-crisis depths annotated (Helm teal / S&amp;P grey). Figures are <strong style="color:#8b949e; font-weight:600;">modeled / backtested, not a forecast</strong>.</p>
+      </figure>
+
+    </section>
+
+    <!-- ===================== SCIENCE / LITERATURE ===================== -->
+    <section id="science" style="max-width:1160px; margin:0 auto; padding:76px 24px;">
+      <div style="margin-bottom:36px; max-width:720px;">
+        <span style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:12px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">The science</span>
+        <h2 style="margin:12px 0 0; font-size:clamp(26px,3.2vw,34px); font-weight:600; letter-spacing:-0.02em; color:#f3f7fa; text-wrap:balance;">Grounded in four decades of peer-reviewed research.</h2>
+        <p style="margin:14px 0 0; font-size:15px; line-height:1.6; color:#8b949e; text-wrap:pretty;">Helm's rules aren't invented — every sleeve implements a documented, replicated market anomaly. The core references behind the strategy:</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:18px; align-items:start;">
+
+        <!-- col A -->
+        <div>
+          <h3 style="margin:0 0 12px; font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#c8d2dc;">Overreaction &amp; mean-reversion</h3>
+          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;">
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">1985</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">Journal of Finance</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">De Bondt &amp; Thaler — Does the stock market overreact?</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">Founding evidence that prices over- and under-react — the behavioral basis for drift.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">1985-debondt-thaler-overreact.pdf</code>
+            </li>
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">1988</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">J. Financial Economics</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">Poterba &amp; Summers — Mean reversion in stock prices</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">Long-horizon reversion — the basis for Helm's RSI2 mean-reversion sleeve.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">1988-poterba-summers-mean-reversion.pdf</code>
+            </li>
+          </ul>
+        </div>
+
+        <!-- col B -->
+        <div>
+          <h3 style="margin:0 0 12px; font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#c8d2dc;">Post-earnings-announcement drift</h3>
+          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;">
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">1989</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">J. Accounting Research</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">Bernard &amp; Thomas — PEAD: delayed response or risk premium?</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">The canonical demonstration of post-earnings drift — Helm's core signal.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">1989-bernard-thomas-pead-delayed-response.pdf</code>
+            </li>
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">1990</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">J. Accounting &amp; Economics</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">Bernard &amp; Thomas — Prices don't fully reflect future earnings</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">Why the drift persists — slow incorporation of the earnings signal.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">1990-bernard-thomas-prices-not-reflect-earnings.pdf</code>
+            </li>
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">2006</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">J. Accounting Research</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">Livnat &amp; Mendenhall — PEAD: analyst vs time-series surprise</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">How to measure the surprise that triggers an entry — directly informs Helm's gate.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">2006-livnat-mendenhall-pead-analyst-vs-timeseries.pdf</code>
+            </li>
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">2021</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">J. Behavioral &amp; Exp. Finance</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">Fink — A review of the post-earnings-announcement drift</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">Modern survey confirming the anomaly survives across decades and markets.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">2021-fink-pead-review.pdf</code>
+            </li>
+          </ul>
+        </div>
+
+        <!-- col C -->
+        <div>
+          <h3 style="margin:0 0 12px; font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#c8d2dc;">Momentum &amp; modern evidence</h3>
+          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;">
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">1990</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">Journal of Finance</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">Jegadeesh — Predictable behavior of security returns</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">Short-horizon return predictability that underpins systematic timing.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">1990-jegadeesh-predictable-behavior.pdf</code>
+            </li>
+            <li style="background:#11161f; border:1px solid #1f2630; border-radius:12px; padding:14px 15px;">
+              <div style="display:flex; align-items:center; gap:9px; margin-bottom:7px;"><span style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#06231f; background:var(--accent-2); padding:2px 7px; border-radius:5px;">1996</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:#8b949e;">Journal of Finance</span></div>
+              <div style="font-size:13.5px; font-weight:600; color:#e6edf3; line-height:1.4;">Chan, Jegadeesh &amp; Lakonishok — Momentum strategies</div>
+              <p style="margin:7px 0 9px; font-size:12px; line-height:1.5; color:#8b949e;">Links momentum to earnings news — the bridge between drift and price trend.</p>
+              <code style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d6673;">1996-chan-jegadeesh-lakonishok-momentum.pdf</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="margin:24px 0 0; font-size:11.5px; line-height:1.6; color:#5d6673; max-width:820px;">References are provided for context and do not constitute an endorsement of Helm by their authors. Academic findings describe historical samples; they do not predict future results.</p>
+    </section>
+
+    <!-- ===================== CTA BAND ===================== -->
+    <section style="max-width:1160px; margin:0 auto; padding:80px 24px;">
+      <div style="position:relative; overflow:hidden; background:linear-gradient(140deg,#10242a,#0e1820); border:1px solid rgba(63,182,172,0.3); border-radius:22px; padding:clamp(36px,5vw,64px); text-align:center;">
+        <svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" style="position:absolute; left:0; right:0; bottom:0; width:100%; height:120px; opacity:0.45;">
+          <path d="M0,160 L150,150 L300,156 L450,134 L600,120 L750,96 L900,104 L1050,64 L1200,40" fill="none" stroke="var(--accent)" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <div style="position:relative;">
+          <h2 style="margin:0; font-size:clamp(28px,4vw,42px); font-weight:600; letter-spacing:-0.025em; color:#f3f7fa;">Take the helm.</h2>
+          <p style="margin:16px auto 0; max-width:480px; font-size:15px; line-height:1.6; color:#9fb0ac; text-wrap:pretty;">A transparent, rules-based system you can actually steer. Access is invite-only and owner-gated.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:30px;">
+            <a href="https://app.helmfinances.com" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-size:15px; font-weight:600; color:#06231f; background:linear-gradient(150deg,var(--accent-2),var(--accent)); padding:14px 26px; border-radius:11px; box-shadow:0 8px 26px rgba(63,182,172,0.3);" style-hover="filter:brightness(1.06);">
+              Sign in
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="mailto:access@helmfinances.com" style="display:inline-flex; align-items:center; text-decoration:none; font-size:15px; font-weight:500; color:#c8d2dc; background:transparent; padding:14px 22px; border:1px solid rgba(63,182,172,0.4); border-radius:11px;" style-hover="border-color:var(--accent-2); color:#e6edf3;">Request access</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="border-top:1px solid #1f2630; background:#0a0d12;">
+    <div style="max-width:1160px; margin:0 auto; padding:40px 24px;">
+      <div style="display:flex; align-items:center; gap:11px; margin-bottom:18px;">
+        <span aria-hidden="true" style="width:28px; height:28px; border-radius:8px; background:linear-gradient(150deg,var(--accent-2),var(--accent)); display:grid; place-items:center;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+            <g stroke="#06231f" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="12" x2="12" y2="3"></line><line x1="12" y1="12" x2="19.5" y2="7.5"></line><line x1="12" y1="12" x2="19.5" y2="16.5"></line><line x1="12" y1="12" x2="12" y2="21"></line><line x1="12" y1="12" x2="4.5" y2="16.5"></line><line x1="12" y1="12" x2="4.5" y2="7.5"></line></g>
+            <circle cx="12" cy="12" r="6.6" fill="none" stroke="#06231f" stroke-width="1.6"></circle><circle cx="12" cy="12" r="2.2" fill="#06231f"></circle>
+          </svg>
+        </span>
+        <span style="display:flex; align-items:baseline; gap:8px;"><span style="font-weight:600; letter-spacing:0.3em; font-size:13px; color:#c8d2dc;">HELM</span><span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:12px; color:var(--accent-2);">Finances</span></span>
+        <span style="flex:1;"></span>
+        <a href="https://app.helmfinances.com" style="text-decoration:none; font-size:13px; color:#8b949e; display:inline-flex; align-items:center; gap:6px;" style-hover="color:var(--accent-2);">app.helmfinances.com
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"></path></svg>
+        </a>
+      </div>
+      <p style="margin:0; font-size:12px; line-height:1.65; color:#5d6673; max-width:880px; text-wrap:pretty;">Helm is a personal research project that trades a demo account. Nothing here is investment advice or a solicitation. Modeled and past performance do not predict future results; trading involves risk of loss.</p>
+      <p style="margin:16px 0 0; font-size:12px; color:#454e5a;">© {{ year }} HELM Finances · helmfinances.com</p>
+    </div>
+  </footer>
+</div>
+
+<script>window.HELM={"startYear":2001,"endYear":2026,"asof":"2026-04-30","n":295,"v4final":378199,"spfinal":106367,"crises":[{"label":"Dot-com","a":2001.75,"b":2002.83,"v4":-6.8,"sp":-33.0},{"label":"GFC","a":2007.75,"b":2009.24,"v4":-5.1,"sp":-55.2},{"label":"COVID","a":2020.08,"b":2020.33,"v4":-4.1,"sp":-33.7},{"label":"2022","a":2022.0,"b":2022.83,"v4":-4.3,"sp":-24.5}],"m":[{"t":2001.83,"v4":10086,"sp":10147,"v4dd":0.0,"spdd":-4.3},{"t":2001.912,"v4":10567,"sp":10938,"v4dd":0.0,"spdd":-1.6},{"t":2001.997,"v4":10783,"sp":11000,"v4dd":0.0,"spdd":-2.3},{"t":2002.082,"v4":10902,"sp":10892,"v4dd":0.0,"spdd":-3.8},{"t":2002.159,"v4":10838,"sp":10696,"v4dd":-0.6,"spdd":-5.5},{"t":2002.235,"v4":11134,"sp":11052,"v4dd":0.0,"spdd":-2.5},{"t":2002.326,"v4":10896,"sp":10410,"v4dd":-2.1,"spdd":-8.2},{"t":2002.411,"v4":10968,"sp":10348,"v4dd":-1.5,"spdd":-8.7},{"t":2002.487,"v4":10779,"sp":9584,"v4dd":-3.2,"spdd":-15.4},{"t":2002.578,"v4":10438,"sp":8829,"v4dd":-6.2,"spdd":-22.1},{"t":2002.66,"v4":10443,"sp":8889,"v4dd":-6.2,"spdd":-21.6},{"t":2002.745,"v4":10378,"sp":7957,"v4dd":-6.8,"spdd":-29.8},{"t":2002.83,"v4":10534,"sp":8611,"v4dd":-5.4,"spdd":-24.0},{"t":2002.909,"v4":10632,"sp":9143,"v4dd":-4.5,"spdd":-19.3},{"t":2002.997,"v4":10504,"sp":8625,"v4dd":-5.7,"spdd":-23.9},{"t":2003.082,"v4":10617,"sp":8413,"v4dd":-4.6,"spdd":-25.8},{"t":2003.159,"v4":10684,"sp":8300,"v4dd":-4.0,"spdd":-26.8},{"t":2003.244,"v4":10741,"sp":8318,"v4dd":-3.5,"spdd":-26.6},{"t":2003.326,"v4":11091,"sp":9021,"v4dd":-0.4,"spdd":-20.4},{"t":2003.408,"v4":11410,"sp":9516,"v4dd":0.0,"spdd":-16.0},{"t":2003.493,"v4":11537,"sp":9617,"v4dd":0.0,"spdd":-15.2},{"t":2003.578,"v4":11639,"sp":9791,"v4dd":0.0,"spdd":-13.6},{"t":2003.657,"v4":11921,"sp":9993,"v4dd":0.0,"spdd":-11.8},{"t":2003.745,"v4":12029,"sp":9884,"v4dd":0.0,"spdd":-12.8},{"t":2003.83,"v4":12691,"sp":10413,"v4dd":0.0,"spdd":-8.1},{"t":2003.906,"v4":12838,"sp":10527,"v4dd":0.0,"spdd":-7.1},{"t":2003.997,"v4":13049,"sp":11056,"v4dd":0.0,"spdd":-2.5},{"t":2004.079,"v4":13244,"sp":11275,"v4dd":0.0,"spdd":-2.1},{"t":2004.156,"v4":13379,"sp":11428,"v4dd":0.0,"spdd":-1.0},{"t":2004.246,"v4":13327,"sp":11276,"v4dd":-0.4,"spdd":-2.5},{"t":2004.329,"v4":13435,"sp":11063,"v4dd":0.0,"spdd":-4.3},{"t":2004.405,"v4":13388,"sp":11252,"v4dd":-0.3,"spdd":-2.7},{"t":2004.496,"v4":13535,"sp":11461,"v4dd":0.0,"spdd":-0.9},{"t":2004.578,"v4":13336,"sp":11091,"v4dd":-1.5,"spdd":-4.1},{"t":2004.665,"v4":13274,"sp":11118,"v4dd":-1.9,"spdd":-3.8},{"t":2004.747,"v4":13549,"sp":11230,"v4dd":0.0,"spdd":-2.9},{"t":2004.827,"v4":13748,"sp":11375,"v4dd":0.0,"spdd":-1.6},{"t":2004.914,"v4":14147,"sp":11881,"v4dd":0.0,"spdd":-0.7},{"t":2004.999,"v4":14563,"sp":12239,"v4dd":0.0,"spdd":-0.4},{"t":2005.082,"v4":14606,"sp":11965,"v4dd":0.0,"spdd":-2.6},{"t":2005.159,"v4":14740,"sp":12215,"v4dd":0.0,"spdd":-0.7},{"t":2005.244,"v4":14610,"sp":11991,"v4dd":-0.9,"spdd":-3.6},{"t":2005.323,"v4":14232,"sp":11767,"v4dd":-3.4,"spdd":-5.4},{"t":2005.411,"v4":14523,"sp":12146,"v4dd":-1.5,"spdd":-2.3},{"t":2005.493,"v4":14634,"sp":12164,"v4dd":-0.7,"spdd":-2.2},{"t":2005.572,"v4":14899,"sp":12630,"v4dd":0.0,"spdd":-0.7},{"t":2005.663,"v4":14964,"sp":12511,"v4dd":0.0,"spdd":-1.7},{"t":2005.745,"v4":15411,"sp":12612,"v4dd":0.0,"spdd":-0.9},{"t":2005.83,"v4":15454,"sp":12313,"v4dd":0.0,"spdd":-3.3},{"t":2005.912,"v4":15874,"sp":12854,"v4dd":0.0,"spdd":-1.4},{"t":2005.994,"v4":15970,"sp":12830,"v4dd":0.0,"spdd":-2.1},{"t":2006.082,"v4":16739,"sp":13138,"v4dd":0.0,"spdd":-1.4},{"t":2006.159,"v4":16531,"sp":13213,"v4dd":-1.2,"spdd":-1.0},{"t":2006.244,"v4":16532,"sp":13431,"v4dd":-1.2,"spdd":-0.6},{"t":2006.32,"v4":16803,"sp":13601,"v4dd":0.0,"spdd":0.0},{"t":2006.411,"v4":16309,"sp":13191,"v4dd":-2.9,"spdd":-3.9},{"t":2006.493,"v4":16279,"sp":13226,"v4dd":-3.1,"spdd":-3.6},{"t":2006.578,"v4":15941,"sp":13285,"v4dd":-5.1,"spdd":-3.2},{"t":2006.663,"v4":16235,"sp":13575,"v4dd":-3.4,"spdd":-1.1},{"t":2006.742,"v4":16467,"sp":13941,"v4dd":-2.0,"spdd":-0.1},{"t":2006.83,"v4":17036,"sp":14381,"v4dd":0.0,"spdd":-0.7},{"t":2006.912,"v4":17077,"sp":14667,"v4dd":0.0,"spdd":-0.3},{"t":2006.991,"v4":17179,"sp":14863,"v4dd":0.0,"spdd":-0.6},{"t":2007.082,"v4":17418,"sp":15086,"v4dd":0.0,"spdd":-0.1},{"t":2007.159,"v4":17187,"sp":14790,"v4dd":-1.3,"spdd":-3.5},{"t":2007.241,"v4":17228,"sp":14962,"v4dd":-1.1,"spdd":-2.4},{"t":2007.326,"v4":17960,"sp":15625,"v4dd":0.0,"spdd":-0.9},{"t":2007.411,"v4":18324,"sp":16155,"v4dd":0.0,"spdd":-0.1},{"t":2007.49,"v4":17948,"sp":15918,"v4dd":-2.0,"spdd":-2.0},{"t":2007.578,"v4":17884,"sp":15420,"v4dd":-2.4,"spdd":-6.0},{"t":2007.663,"v4":18241,"sp":15618,"v4dd":-0.5,"spdd":-4.8},{"t":2007.739,"v4":18613,"sp":16222,"v4dd":0.0,"spdd":-1.1},{"t":2007.83,"v4":19074,"sp":16443,"v4dd":0.0,"spdd":-1.2},{"t":2007.912,"v4":18974,"sp":15806,"v4dd":-0.5,"spdd":-5.0},{"t":2007.997,"v4":18969,"sp":15628,"v4dd":-0.6,"spdd":-6.1},{"t":2008.082,"v4":18335,"sp":14683,"v4dd":-3.9,"spdd":-11.7},{"t":2008.162,"v4":18164,"sp":14303,"v4dd":-4.8,"spdd":-14.0},{"t":2008.246,"v4":18408,"sp":14175,"v4dd":-3.5,"spdd":-14.8},{"t":2008.329,"v4":18589,"sp":14851,"v4dd":-2.5,"spdd":-10.7},{"t":2008.411,"v4":18885,"sp":15076,"v4dd":-1.0,"spdd":-9.4},{"t":2008.496,"v4":18520,"sp":13816,"v4dd":-2.9,"spdd":-17.0},{"t":2008.58,"v4":18836,"sp":13692,"v4dd":-1.2,"spdd":-17.7},{"t":2008.66,"v4":19130,"sp":13903,"v4dd":0.0,"spdd":-16.4},{"t":2008.747,"v4":18802,"sp":12594,"v4dd":-1.7,"spdd":-24.3},{"t":2008.832,"v4":18542,"sp":10513,"v4dd":-3.1,"spdd":-36.8},{"t":2008.909,"v4":18522,"sp":9782,"v4dd":-3.2,"spdd":-41.2},{"t":2008.999,"v4":18755,"sp":9877,"v4dd":-2.0,"spdd":-40.6},{"t":2009.079,"v4":18726,"sp":9066,"v4dd":-2.1,"spdd":-45.5},{"t":2009.156,"v4":18162,"sp":8092,"v4dd":-5.1,"spdd":-51.4},{"t":2009.244,"v4":18383,"sp":8766,"v4dd":-3.9,"spdd":-47.3},{"t":2009.326,"v4":19036,"sp":9637,"v4dd":-0.5,"spdd":-42.1},{"t":2009.405,"v4":20202,"sp":10201,"v4dd":0.0,"spdd":-38.7},{"t":2009.493,"v4":19614,"sp":10194,"v4dd":-2.9,"spdd":-38.7},{"t":2009.578,"v4":20086,"sp":10954,"v4dd":-0.6,"spdd":-34.2},{"t":2009.663,"v4":20833,"sp":11359,"v4dd":0.0,"spdd":-31.7},{"t":2009.745,"v4":21483,"sp":11762,"v4dd":0.0,"spdd":-29.3},{"t":2009.827,"v4":21511,"sp":11536,"v4dd":0.0,"spdd":-30.7},{"t":2009.912,"v4":22238,"sp":12246,"v4dd":0.0,"spdd":-26.4},{"t":2009.997,"v4":22739,"sp":12480,"v4dd":0.0,"spdd":-25.0},{"t":2010.077,"v4":22483,"sp":12027,"v4dd":-1.1,"spdd":-27.7},{"t":2010.153,"v4":23295,"sp":12402,"v4dd":0.0,"spdd":-25.5},{"t":2010.244,"v4":24280,"sp":13157,"v4dd":0.0,"spdd":-20.9},{"t":2010.326,"v4":24854,"sp":13361,"v4dd":0.0,"spdd":-19.7},{"t":2010.402,"v4":23882,"sp":12299,"v4dd":-3.9,"spdd":-26.1},{"t":2010.493,"v4":23461,"sp":11663,"v4dd":-5.6,"spdd":-29.9},{"t":2010.575,"v4":24165,"sp":12459,"v4dd":-2.8,"spdd":-25.1},{"t":2010.663,"v4":23416,"sp":11899,"v4dd":-5.8,"spdd":-28.5},{"t":2010.745,"v4":24514,"sp":12964,"v4dd":-1.4,"spdd":-22.1},{"t":2010.824,"v4":25116,"sp":13460,"v4dd":0.0,"spdd":-19.1},{"t":2010.912,"v4":25636,"sp":13460,"v4dd":0.0,"spdd":-19.1},{"t":2010.997,"v4":26332,"sp":14359,"v4dd":0.0,"spdd":-13.7},{"t":2011.082,"v4":27250,"sp":14694,"v4dd":0.0,"spdd":-11.7},{"t":2011.159,"v4":28242,"sp":15204,"v4dd":0.0,"spdd":-8.6},{"t":2011.244,"v4":27878,"sp":15206,"v4dd":-1.3,"spdd":-8.6},{"t":2011.323,"v4":27983,"sp":15647,"v4dd":-0.9,"spdd":-6.0},{"t":2011.411,"v4":28507,"sp":15471,"v4dd":0.0,"spdd":-7.0},{"t":2011.493,"v4":28348,"sp":15210,"v4dd":-0.6,"spdd":-8.6},{"t":2011.572,"v4":28387,"sp":14906,"v4dd":-0.4,"spdd":-10.4},{"t":2011.663,"v4":26716,"sp":14086,"v4dd":-6.3,"spdd":-15.3},{"t":2011.745,"v4":26987,"sp":13109,"v4dd":-5.3,"spdd":-21.2},{"t":2011.83,"v4":28073,"sp":14539,"v4dd":-1.5,"spdd":-12.6},{"t":2011.912,"v4":28358,"sp":14480,"v4dd":-0.5,"spdd":-13.0},{"t":2011.994,"v4":28262,"sp":14632,"v4dd":-0.9,"spdd":-12.1},{"t":2012.082,"v4":29413,"sp":15310,"v4dd":0.0,"spdd":-8.0},{"t":2012.162,"v4":30604,"sp":15975,"v4dd":0.0,"spdd":-4.0},{"t":2012.244,"v4":31974,"sp":16488,"v4dd":0.0,"spdd":-0.9},{"t":2012.329,"v4":31720,"sp":16378,"v4dd":-0.8,"spdd":-1.6},{"t":2012.413,"v4":30155,"sp":15395,"v4dd":-5.7,"spdd":-7.5},{"t":2012.493,"v4":30873,"sp":16019,"v4dd":-3.4,"spdd":-3.7},{"t":2012.58,"v4":31153,"sp":16209,"v4dd":-2.6,"spdd":-2.6},{"t":2012.665,"v4":31876,"sp":16615,"v4dd":-0.3,"spdd":-0.7},{"t":2012.742,"v4":32022,"sp":17036,"v4dd":0.0,"spdd":-1.7},{"t":2012.832,"v4":32879,"sp":16726,"v4dd":0.0,"spdd":-3.5},{"t":2012.914,"v4":33220,"sp":16821,"v4dd":0.0,"spdd":-2.9},{"t":2012.999,"v4":33752,"sp":16971,"v4dd":0.0,"spdd":-2.1},{"t":2013.082,"v4":35340,"sp":17840,"v4dd":0.0,"spdd":-0.6},{"t":2013.159,"v4":35199,"sp":18068,"v4dd":-0.4,"spdd":-1.1},{"t":2013.235,"v4":35564,"sp":18754,"v4dd":0.0,"spdd":0.0},{"t":2013.326,"v4":36715,"sp":19114,"v4dd":0.0,"spdd":0.0},{"t":2013.411,"v4":37047,"sp":19565,"v4dd":0.0,"spdd":-2.2},{"t":2013.487,"v4":37711,"sp":19304,"v4dd":0.0,"spdd":-3.5},{"t":2013.578,"v4":39282,"sp":20302,"v4dd":0.0,"spdd":-0.5},{"t":2013.66,"v4":40137,"sp":19693,"v4dd":0.0,"spdd":-4.3},{"t":2013.745,"v4":41086,"sp":20316,"v4dd":0.0,"spdd":-2.4},{"t":2013.83,"v4":41682,"sp":21257,"v4dd":0.0,"spdd":-0.8},{"t":2013.909,"v4":42611,"sp":21887,"v4dd":0.0,"spdd":-0.1},{"t":2013.997,"v4":44332,"sp":22454,"v4dd":0.0,"spdd":0.0},{"t":2014.082,"v4":43225,"sp":21663,"v4dd":-2.5,"spdd":-3.5},{"t":2014.159,"v4":44328,"sp":22649,"v4dd":-0.0,"spdd":0.0},{"t":2014.244,"v4":44447,"sp":22837,"v4dd":0.0,"spdd":-0.2},{"t":2014.326,"v4":44880,"sp":22995,"v4dd":0.0,"spdd":-0.3},{"t":2014.408,"v4":45862,"sp":23529,"v4dd":0.0,"spdd":0.0},{"t":2014.493,"v4":47105,"sp":24015,"v4dd":0.0,"spdd":-0.1},{"t":2014.578,"v4":46868,"sp":23692,"v4dd":-0.5,"spdd":-2.8},{"t":2014.657,"v4":48016,"sp":24627,"v4dd":0.0,"spdd":0.0},{"t":2014.745,"v4":47887,"sp":24287,"v4dd":-0.3,"spdd":-1.9},{"t":2014.83,"v4":47895,"sp":24859,"v4dd":-0.3,"spdd":0.0},{"t":2014.906,"v4":48784,"sp":25542,"v4dd":0.0,"spdd":-0.2},{"t":2014.997,"v4":48035,"sp":25477,"v4dd":-1.5,"spdd":-1.5},{"t":2015.079,"v4":47858,"sp":24722,"v4dd":-1.9,"spdd":-4.4},{"t":2015.156,"v4":49368,"sp":26112,"v4dd":0.0,"spdd":-0.5},{"t":2015.244,"v4":49612,"sp":25702,"v4dd":0.0,"spdd":-2.2},{"t":2015.326,"v4":50522,"sp":25955,"v4dd":0.0,"spdd":-1.5},{"t":2015.405,"v4":51762,"sp":26288,"v4dd":0.0,"spdd":-1.1},{"t":2015.493,"v4":52505,"sp":25754,"v4dd":0.0,"spdd":-3.1},{"t":2015.578,"v4":53386,"sp":26336,"v4dd":0.0,"spdd":-1.0},{"t":2015.663,"v4":52330,"sp":24731,"v4dd":-2.0,"spdd":-7.0},{"t":2015.745,"v4":51862,"sp":24100,"v4dd":-2.9,"spdd":-9.4},{"t":2015.827,"v4":52332,"sp":26150,"v4dd":-2.0,"spdd":-1.7},{"t":2015.912,"v4":52958,"sp":26245,"v4dd":-0.8,"spdd":-1.3},{"t":2015.997,"v4":53015,"sp":25792,"v4dd":-0.7,"spdd":-3.0},{"t":2016.077,"v4":52691,"sp":24508,"v4dd":-1.3,"spdd":-7.9},{"t":2016.162,"v4":52762,"sp":24487,"v4dd":-1.2,"spdd":-7.9},{"t":2016.246,"v4":55871,"sp":26135,"v4dd":0.0,"spdd":-1.7},{"t":2016.326,"v4":56147,"sp":26238,"v4dd":0.0,"spdd":-1.8},{"t":2016.413,"v4":57029,"sp":26684,"v4dd":0.0,"spdd":-0.2},{"t":2016.496,"v4":57755,"sp":26777,"v4dd":0.0,"spdd":-0.8},{"t":2016.575,"v4":59485,"sp":27753,"v4dd":0.0,"spdd":-0.1},{"t":2016.665,"v4":60065,"sp":27787,"v4dd":0.0,"spdd":-0.8},{"t":2016.747,"v4":60160,"sp":27788,"v4dd":0.0,"spdd":-0.8},{"t":2016.832,"v4":61217,"sp":27306,"v4dd":0.0,"spdd":-2.5},{"t":2016.914,"v4":63434,"sp":28312,"v4dd":0.0,"spdd":-0.5},{"t":2016.997,"v4":65272,"sp":28886,"v4dd":0.0,"spdd":-1.3},{"t":2017.082,"v4":65597,"sp":29403,"v4dd":0.0,"spdd":-0.9},{"t":2017.159,"v4":68285,"sp":30559,"v4dd":0.0,"spdd":-0.3},{"t":2017.244,"v4":67811,"sp":30597,"v4dd":-0.7,"spdd":-1.3},{"t":2017.32,"v4":67690,"sp":30900,"v4dd":-0.9,"spdd":-0.3},{"t":2017.411,"v4":69099,"sp":31337,"v4dd":0.0,"spdd":-0.1},{"t":2017.493,"v4":70195,"sp":31536,"v4dd":0.0,"spdd":-1.2},{"t":2017.578,"v4":70719,"sp":32184,"v4dd":0.0,"spdd":-0.3},{"t":2017.663,"v4":71643,"sp":32278,"v4dd":0.0,"spdd":-0.2},{"t":2017.742,"v4":72024,"sp":32929,"v4dd":0.0,"spdd":0.0},{"t":2017.83,"v4":73542,"sp":33705,"v4dd":0.0,"spdd":-0.2},{"t":2017.912,"v4":75614,"sp":34735,"v4dd":0.0,"spdd":0.0},{"t":2017.991,"v4":76943,"sp":35156,"v4dd":0.0,"spdd":-0.5},{"t":2018.082,"v4":78817,"sp":37138,"v4dd":0.0,"spdd":-1.6},{"t":2018.159,"v4":74304,"sp":35787,"v4dd":-5.7,"spdd":-5.2},{"t":2018.238,"v4":74193,"sp":34806,"v4dd":-5.9,"spdd":-7.8},{"t":2018.326,"v4":74503,"sp":34986,"v4dd":-5.5,"spdd":-7.3},{"t":2018.411,"v4":76582,"sp":35837,"v4dd":-2.8,"spdd":-5.1},{"t":2018.49,"v4":77524,"sp":36043,"v4dd":-1.6,"spdd":-4.5},{"t":2018.578,"v4":81257,"sp":37378,"v4dd":0.0,"spdd":-1.0},{"t":2018.663,"v4":83748,"sp":38571,"v4dd":0.0,"spdd":-0.4},{"t":2018.739,"v4":84401,"sp":38800,"v4dd":0.0,"spdd":-0.5},{"t":2018.83,"v4":79719,"sp":36119,"v4dd":-5.5,"spdd":-7.4},{"t":2018.912,"v4":79539,"sp":36789,"v4dd":-5.8,"spdd":-5.7},{"t":2018.997,"v4":77432,"sp":33550,"v4dd":-8.3,"spdd":-14.0},{"t":2019.082,"v4":78674,"sp":36236,"v4dd":-6.8,"spdd":-7.1},{"t":2019.159,"v4":79802,"sp":37411,"v4dd":-5.4,"spdd":-4.1},{"t":2019.238,"v4":82133,"sp":38088,"v4dd":-2.7,"spdd":-2.4},{"t":2019.326,"v4":84938,"sp":39644,"v4dd":0.0,"spdd":0.0},{"t":2019.411,"v4":79039,"sp":37116,"v4dd":-6.9,"spdd":-6.4},{"t":2019.487,"v4":81226,"sp":39698,"v4dd":-4.4,"spdd":-0.5},{"t":2019.578,"v4":83173,"sp":40299,"v4dd":-2.1,"spdd":-1.5},{"t":2019.66,"v4":80593,"sp":39624,"v4dd":-5.1,"spdd":-3.2},{"t":2019.745,"v4":80398,"sp":40395,"v4dd":-5.3,"spdd":-1.3},{"t":2019.83,"v4":80033,"sp":41288,"v4dd":-5.8,"spdd":-0.3},{"t":2019.909,"v4":82328,"sp":42782,"v4dd":-3.1,"spdd":-0.4},{"t":2019.997,"v4":85274,"sp":44025,"v4dd":0.0,"spdd":-0.3},{"t":2020.082,"v4":84294,"sp":44008,"v4dd":-1.1,"spdd":-3.1},{"t":2020.159,"v4":82825,"sp":40524,"v4dd":-2.9,"spdd":-12.4},{"t":2020.246,"v4":81759,"sp":35464,"v4dd":-4.1,"spdd":-23.4},{"t":2020.329,"v4":82989,"sp":39967,"v4dd":-2.7,"spdd":-13.6},{"t":2020.408,"v4":88625,"sp":41871,"v4dd":0.0,"spdd":-9.5},{"t":2020.496,"v4":98333,"sp":42614,"v4dd":0.0,"spdd":-7.9},{"t":2020.58,"v4":100667,"sp":45123,"v4dd":0.0,"spdd":-2.5},{"t":2020.665,"v4":105747,"sp":48273,"v4dd":0.0,"spdd":-0.4},{"t":2020.747,"v4":107859,"sp":46465,"v4dd":0.0,"spdd":-6.0},{"t":2020.83,"v4":105674,"sp":45307,"v4dd":-2.0,"spdd":-8.3},{"t":2020.914,"v4":112147,"sp":50235,"v4dd":0.0,"spdd":-0.4},{"t":2020.999,"v4":116300,"sp":52096,"v4dd":0.0,"spdd":0.0},{"t":2021.077,"v4":123675,"sp":51565,"v4dd":0.0,"spdd":-3.7},{"t":2021.153,"v4":128141,"sp":52999,"v4dd":0.0,"spdd":-3.1},{"t":2021.244,"v4":136309,"sp":55405,"v4dd":0.0,"spdd":0.0},{"t":2021.326,"v4":140042,"sp":58337,"v4dd":0.0,"spdd":-0.7},{"t":2021.402,"v4":139963,"sp":58720,"v4dd":-0.1,"spdd":-0.5},{"t":2021.493,"v4":140135,"sp":60037,"v4dd":0.0,"spdd":0.0},{"t":2021.575,"v4":145665,"sp":61502,"v4dd":0.0,"spdd":-0.6},{"t":2021.663,"v4":149910,"sp":63333,"v4dd":0.0,"spdd":-0.1},{"t":2021.745,"v4":144923,"sp":60381,"v4dd":-3.3,"spdd":-5.0},{"t":2021.824,"v4":150401,"sp":64617,"v4dd":0.0,"spdd":0.0},{"t":2021.912,"v4":153984,"sp":64098,"v4dd":0.0,"spdd":-3.0},{"t":2021.997,"v4":157303,"sp":67063,"v4dd":0.0,"spdd":-0.5},{"t":2022.082,"v4":154670,"sp":63526,"v4dd":-1.7,"spdd":-5.8},{"t":2022.159,"v4":151514,"sp":61651,"v4dd":-3.7,"spdd":-8.6},{"t":2022.244,"v4":157084,"sp":63968,"v4dd":-0.1,"spdd":-5.2},{"t":2022.323,"v4":154674,"sp":58354,"v4dd":-1.7,"spdd":-13.5},{"t":2022.411,"v4":156423,"sp":58485,"v4dd":-0.6,"spdd":-13.3},{"t":2022.493,"v4":150477,"sp":53663,"v4dd":-4.3,"spdd":-20.4},{"t":2022.572,"v4":154188,"sp":58604,"v4dd":-2.0,"spdd":-13.1},{"t":2022.663,"v4":155098,"sp":56213,"v4dd":-1.4,"spdd":-16.7},{"t":2022.745,"v4":152546,"sp":51016,"v4dd":-3.0,"spdd":-24.4},{"t":2022.83,"v4":155712,"sp":55163,"v4dd":-1.0,"spdd":-18.2},{"t":2022.912,"v4":161468,"sp":58229,"v4dd":0.0,"spdd":-13.7},{"t":2022.994,"v4":160539,"sp":54874,"v4dd":-0.6,"spdd":-18.6},{"t":2023.082,"v4":164139,"sp":58325,"v4dd":0.0,"spdd":-13.5},{"t":2023.159,"v4":166868,"sp":56858,"v4dd":0.0,"spdd":-15.7},{"t":2023.244,"v4":172736,"sp":58966,"v4dd":0.0,"spdd":-12.6},{"t":2023.32,"v4":172723,"sp":59908,"v4dd":-0.0,"spdd":-11.2},{"t":2023.411,"v4":176045,"sp":60185,"v4dd":0.0,"spdd":-10.8},{"t":2023.493,"v4":182721,"sp":64085,"v4dd":0.0,"spdd":-5.0},{"t":2023.578,"v4":189196,"sp":66183,"v4dd":0.0,"spdd":-1.9},{"t":2023.663,"v4":185423,"sp":65107,"v4dd":-2.0,"spdd":-3.5},{"t":2023.742,"v4":181622,"sp":62019,"v4dd":-4.0,"spdd":-8.1},{"t":2023.83,"v4":183749,"sp":60672,"v4dd":-2.9,"spdd":-10.0},{"t":2023.912,"v4":191242,"sp":66214,"v4dd":0.0,"spdd":-1.8},{"t":2023.991,"v4":199119,"sp":69237,"v4dd":0.0,"spdd":-0.3},{"t":2024.082,"v4":206726,"sp":70340,"v4dd":0.0,"spdd":-1.7},{"t":2024.162,"v4":218579,"sp":74011,"v4dd":0.0,"spdd":0.0},{"t":2024.238,"v4":228420,"sp":76431,"v4dd":0.0,"spdd":-0.0},{"t":2024.329,"v4":223946,"sp":73350,"v4dd":-2.0,"spdd":-4.1},{"t":2024.413,"v4":234387,"sp":77060,"v4dd":0.0,"spdd":-0.8},{"t":2024.49,"v4":247281,"sp":79778,"v4dd":0.0,"spdd":-0.5},{"t":2024.58,"v4":247063,"sp":80744,"v4dd":-0.1,"spdd":-2.5},{"t":2024.663,"v4":257906,"sp":82631,"v4dd":0.0,"spdd":-0.2},{"t":2024.747,"v4":265542,"sp":84367,"v4dd":0.0,"spdd":0.0},{"t":2024.832,"v4":265135,"sp":83614,"v4dd":-0.2,"spdd":-2.7},{"t":2024.912,"v4":279419,"sp":88600,"v4dd":0.0,"spdd":0.0},{"t":2024.999,"v4":277201,"sp":86468,"v4dd":-0.8,"spdd":-3.3},{"t":2025.082,"v4":288912,"sp":88790,"v4dd":0.0,"spdd":-1.3},{"t":2025.159,"v4":292379,"sp":87663,"v4dd":0.0,"spdd":-3.1},{"t":2025.244,"v4":282888,"sp":82779,"v4dd":-3.2,"spdd":-8.5},{"t":2025.326,"v4":283886,"sp":82061,"v4dd":-2.9,"spdd":-9.3},{"t":2025.408,"v4":294457,"sp":87268,"v4dd":0.0,"spdd":-3.5},{"t":2025.493,"v4":301282,"sp":91459,"v4dd":0.0,"spdd":0.0},{"t":2025.578,"v4":304662,"sp":93608,"v4dd":0.0,"spdd":-0.7},{"t":2025.657,"v4":314205,"sp":95421,"v4dd":0.0,"spdd":-0.6},{"t":2025.745,"v4":327715,"sp":98582,"v4dd":0.0,"spdd":-0.1},{"t":2025.83,"v4":332732,"sp":100929,"v4dd":0.0,"spdd":-0.8},{"t":2025.906,"v4":343378,"sp":101155,"v4dd":0.0,"spdd":-0.5},{"t":2025.997,"v4":347519,"sp":100965,"v4dd":0.0,"spdd":-1.2},{"t":2026.079,"v4":351695,"sp":102376,"v4dd":0.0,"spdd":-0.5},{"t":2026.156,"v4":359440,"sp":101556,"v4dd":0.0,"spdd":-1.3},{"t":2026.244,"v4":345786,"sp":96250,"v4dd":-3.8,"spdd":-6.5},{"t":2026.326,"v4":378199,"sp":106367,"v4dd":0.0,"spdd":0.0}]};</script>
+<script>/* Helm landing — real-data charts (no deps). Renders into #heroChart and #perfChart from window.HELM. Linear y-axes. */
+(function(){
+  var H = window.HELM; if(!H || !H.m || !H.m.length) return;
+  var ACC="#3fb6ac", ACC2="#2dd4bf", SPC="#9aa6b2", NEG="#f87171", GRID="#222a33", MUT="#8b949e", T3="#5d6673";
+  var Y0=H.startYear, Y1=H.endYear, M=H.m, FONT="'JetBrains Mono',ui-monospace,monospace";
+  var min=function(a){return Math.min.apply(null,a);}, max=function(a){return Math.max.apply(null,a);};
+  function elid(id){return document.getElementById(id);}
+  function kfmt(v){ return v===0?"$0":"$"+(v/1000<10?(v/1000).toFixed(1):Math.round(v/1000))+"k"; }
+  function wrap(vb,inner,label){ return '<svg viewBox="0 0 '+vb+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+label+'" style="width:100%;height:auto;display:block;overflow:visible;">'+inner+'</svg>'; }
+  function gridSteps(top){ var step= top>180000?50000: top>90000?25000: top>40000?10000:5000, out=[]; for(var g=0; g<=top; g+=step) out.push(g); return out; }
+
+  /* ---------------- HERO: Helm v4.1 growth of $10k (LINEAR), crisis stripes ---------------- */
+  function hero(){
+    var c=elid("heroChart"); if(!c) return;
+    var W=820,Hh=360,ml=52,mr=46,mt=26,mb=26,pw=W-ml-mr,ph=Hh-mt-mb;
+    var xs=function(y){return ml+(y-Y0)/(Y1-Y0)*pw;};
+    var v=M.map(function(p){return p.v4;}), hi=max(v), top=hi*1.06;
+    var ys=function(a){return mt+(1-a/top)*ph;};   // linear, 0 at baseline
+    var s="<defs><linearGradient id='hf' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='"+ACC+"' stop-opacity='0.30'/><stop offset='100%' stop-color='"+ACC+"' stop-opacity='0'/></linearGradient><linearGradient id='hl' x1='0' y1='0' x2='1' y2='0'><stop offset='0%' stop-color='"+ACC+"'/><stop offset='100%' stop-color='"+ACC2+"'/></linearGradient></defs>";
+    H.crises.forEach(function(cr){ var x0=xs(cr.a),x1=xs(cr.b);
+      s+='<rect x="'+x0.toFixed(1)+'" y="'+mt+'" width="'+(x1-x0).toFixed(1)+'" height="'+ph+'" fill="'+NEG+'" fill-opacity="0.07"/>';
+      s+='<text x="'+((x0+x1)/2).toFixed(1)+'" y="'+(mt-9)+'" text-anchor="middle" font-size="8.5" fill="'+T3+'" font-family="'+FONT+'">'+cr.label+'</text>'; });
+    gridSteps(top).forEach(function(g){ var y=ys(g);
+      s+='<line x1="'+ml+'" y1="'+y.toFixed(1)+'" x2="'+(W-mr)+'" y2="'+y.toFixed(1)+'" stroke="'+GRID+'" stroke-width="1"/>';
+      s+='<text x="'+(ml-7)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="'+T3+'" font-family="'+FONT+'">'+kfmt(g)+'</text>'; });
+    for(var yr=2005;yr<=Y1;yr+=5){ var x=xs(yr); s+='<text x="'+x.toFixed(1)+'" y="'+(Hh-7)+'" text-anchor="middle" font-size="9.5" fill="'+T3+'" font-family="'+FONT+'">'+yr+'</text>'; }
+    var d=""; M.forEach(function(p,i){ d+=(i?"L":"M")+xs(p.t).toFixed(1)+" "+ys(p.v4).toFixed(1)+" "; });
+    var lastX=xs(M[M.length-1].t).toFixed(1);
+    s+='<path d="'+d+'L'+lastX+' '+(mt+ph)+' L'+ml+' '+(mt+ph)+' Z" fill="url(#hf)"/>';
+    s+='<path d="'+d+'" fill="none" stroke="url(#hl)" stroke-width="2.8" stroke-linejoin="round"/>';
+    var ly=ys(M[M.length-1].v4);
+    s+='<circle cx="'+lastX+'" cy="'+ly.toFixed(1)+'" r="3.6" fill="'+ACC2+'"/>';
+    s+='<text x="'+(parseFloat(lastX)+6)+'" y="'+(ly+4).toFixed(1)+'" font-size="12" font-weight="700" fill="'+ACC2+'" font-family="'+FONT+'">$'+Math.round(H.v4final/1000)+'k</text>';
+    c.innerHTML=wrap(W+" "+Hh,s,"Helm v4.1 model: growth of $10,000 from "+Y0+" to "+Y1+" (backtest), linear scale, crisis periods shaded.");
+  }
+
+  /* ---------------- PERF: v4.1 vs S&P, $/% toggle (both LINEAR), + drawdown panel ---------------- */
+  var mode="dollar";
+  function perf(){
+    var c=elid("perfChart"); if(!c) return;
+    var W=1000,ml=60,mr=72,pw=W-ml-mr;
+    var mt=26,topH=300,gap=18,ddH=168,vbH=topH+gap+ddH, ph=topH-mt-22;
+    var xs=function(y){return ml+(y-Y0)/(Y1-Y0)*pw;};
+    var v4=M.map(function(p){return p.v4;}), sp=M.map(function(p){return p.sp;});
+    var s="";
+    H.crises.forEach(function(cr){ var x0=xs(cr.a),x1=xs(cr.b);
+      s+='<rect x="'+x0.toFixed(1)+'" y="'+mt+'" width="'+(x1-x0).toFixed(1)+'" height="'+(vbH-mt)+'" fill="'+NEG+'" fill-opacity="0.06"/>';
+      s+='<text x="'+((x0+x1)/2).toFixed(1)+'" y="'+(mt-10)+'" text-anchor="middle" font-size="9.5" fill="'+MUT+'" font-family="'+FONT+'">'+cr.label+'</text>'; });
+    var ys, e4, es, lab4, labs, P4, PS;
+    if(mode==="dollar"){
+      var top=max([max(v4),max(sp)])*1.06; ys=function(a){return mt+(1-a/top)*ph;};
+      gridSteps(top).forEach(function(g){ var y=ys(g);
+        s+='<line x1="'+ml+'" y1="'+y.toFixed(1)+'" x2="'+(W-mr)+'" y2="'+y.toFixed(1)+'" stroke="'+GRID+'" stroke-width="1"/>';
+        s+='<text x="'+(ml-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-size="10" fill="'+T3+'" font-family="'+FONT+'">'+kfmt(g)+'</text>'; });
+      e4=ys(v4[v4.length-1]); es=ys(sp[sp.length-1]);
+      lab4="$"+Math.round(H.v4final/1000)+"k"; labs="$"+Math.round(H.spfinal/1000)+"k";
+      P4=function(i){return ys(v4[i]);}; PS=function(i){return ys(sp[i]);};
+    } else {
+      var pct=function(a){return a/10000*100-100;};
+      var top=pct(max([max(v4),max(sp)]))*1.04, bot=Math.min(0,pct(min([min(v4),min(sp)])));
+      ys=function(a){return mt+(1-(a-bot)/(top-bot))*ph;};
+      var st= top>1800?500: top>900?250:100; for(var g=Math.ceil(bot/st)*st; g<=top; g+=st){ var y=ys(g);
+        s+='<line x1="'+ml+'" y1="'+y.toFixed(1)+'" x2="'+(W-mr)+'" y2="'+y.toFixed(1)+'" stroke="'+GRID+'" stroke-width="1"/>';
+        s+='<text x="'+(ml-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-size="10" fill="'+T3+'" font-family="'+FONT+'">'+(g>0?"+":"")+g+'%</text>'; }
+      e4=ys(pct(v4[v4.length-1])); es=ys(pct(sp[sp.length-1]));
+      lab4="+"+Math.round(pct(H.v4final))+"%"; labs="+"+Math.round(pct(H.spfinal))+"%";
+      P4=function(i){return ys(pct(v4[i]));}; PS=function(i){return ys(pct(sp[i]));};
+    }
+    function pathOf(fn){ var d=""; M.forEach(function(p,i){ d+=(i?"L":"M")+xs(p.t).toFixed(1)+" "+fn(i).toFixed(1)+" "; }); return d; }
+    s+='<path d="'+pathOf(PS)+'" fill="none" stroke="'+SPC+'" stroke-width="1.8" stroke-linejoin="round"/>';
+    s+='<path d="'+pathOf(P4)+'" fill="none" stroke="'+ACC2+'" stroke-width="2.6" stroke-linejoin="round"/>';
+    s+='<text x="'+(W-mr+5)+'" y="'+(e4+3).toFixed(1)+'" font-size="11" font-weight="700" fill="'+ACC2+'" font-family="'+FONT+'">'+lab4+'</text>';
+    s+='<text x="'+(W-mr+5)+'" y="'+(es+3).toFixed(1)+'" font-size="11" fill="'+SPC+'" font-family="'+FONT+'">'+labs+'</text>';
+    // ----- drawdown panel (always %) -----
+    var ddTop=topH+gap, ddPh=ddH-30, DDLO=-60;
+    var ddY=function(a){ return ddTop+(-Math.max(a,DDLO)/-DDLO)*ddPh; };
+    [0,-20,-40].forEach(function(g){ var y=ddY(g);
+      s+='<line x1="'+ml+'" y1="'+y.toFixed(1)+'" x2="'+(W-mr)+'" y2="'+y.toFixed(1)+'" stroke="'+GRID+'" stroke-width="1"/>';
+      s+='<text x="'+(ml-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="'+T3+'" font-family="'+FONT+'">'+g+'%</text>'; });
+    function ddPath(key){ var d=""; M.forEach(function(p,i){ d+=(i?"L":"M")+xs(p.t).toFixed(1)+" "+ddY(p[key]).toFixed(1)+" "; }); return d; }
+    var lastX=xs(M[M.length-1].t).toFixed(1), z=ddY(0).toFixed(1);
+    s+='<path d="'+ddPath("spdd")+'L'+lastX+' '+z+' L'+ml+' '+z+' Z" fill="'+SPC+'" fill-opacity="0.12"/>';
+    s+='<path d="'+ddPath("spdd")+'" fill="none" stroke="'+SPC+'" stroke-width="1.5"/>';
+    s+='<path d="'+ddPath("v4dd")+'L'+lastX+' '+z+' L'+ml+' '+z+' Z" fill="'+ACC+'" fill-opacity="0.18"/>';
+    s+='<path d="'+ddPath("v4dd")+'" fill="none" stroke="'+ACC2+'" stroke-width="2"/>';
+    s+='<text x="'+ml+'" y="'+(ddTop-9)+'" font-size="10" fill="'+MUT+'" font-family="'+FONT+'">Drawdown — peak-to-trough loss (%)</text>';
+    H.crises.forEach(function(cr){ var xm=xs((cr.a+cr.b)/2);
+      var spY=ddY(cr.sp<DDLO?DDLO:cr.sp);
+      s+='<text x="'+xm.toFixed(1)+'" y="'+(spY-5).toFixed(1)+'" text-anchor="middle" font-size="9.5" font-weight="600" fill="'+SPC+'" font-family="'+FONT+'">'+cr.sp+'%</text>';
+      var hY=Math.max(ddY(cr.v4)+15, ddY(-14));
+      s+='<text x="'+xm.toFixed(1)+'" y="'+hY.toFixed(1)+'" text-anchor="middle" font-size="9.5" font-weight="700" fill="'+ACC2+'" font-family="'+FONT+'">'+cr.v4+'%</text>'; });
+    for(var yr=2005;yr<=Y1;yr+=5){ var x=xs(yr); s+='<text x="'+x.toFixed(1)+'" y="'+(vbH-3)+'" text-anchor="middle" font-size="9.5" fill="'+T3+'" font-family="'+FONT+'">'+yr+'</text>'; }
+    c.innerHTML=wrap(W+" "+vbH,s,"Helm v4.1 versus S&P 500, "+Y0+"-"+Y1+" backtest, linear scale. Upper panel: growth; lower panel: drawdown with each crisis depth annotated for Helm (teal) and the S&P (grey). Crisis periods shaded.");
+  }
+  function setMode(m){
+    mode=m; perf();
+    var bd=elid("tgDollar"), bp=elid("tgPct"); if(!bd||!bp) return;
+    var on="background:var(--accent-2);color:#06231f;", off="background:transparent;color:#8b949e;";
+    bd.setAttribute("style", bd.getAttribute("data-base")+(m==="dollar"?on:off));
+    bp.setAttribute("style", bp.getAttribute("data-base")+(m==="pct"?on:off));
+  }
+  function init(){ hero(); perf();
+    var bd=elid("tgDollar"), bp=elid("tgPct");
+    if(bd&&bp){ bd.onclick=function(){setMode("dollar");}; bp.onclick=function(){setMode("pct");}; setMode("dollar"); }
+  }
+  if(document.readyState!=="loading") init(); else document.addEventListener("DOMContentLoaded", init);
+})();</script>
+</body>
+</html>
