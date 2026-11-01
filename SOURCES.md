@@ -14,7 +14,7 @@ from Yahoo Finance), then paste it over the `window.HELM=` line in `index.html`.
 | Helm v6 Calmar | 0.71 | same | `kpis.pead_d08.calmar` |
 | Window | Oct 2001 → Jun 2026 | same | `meta.sample` = 2001-10-01 .. 2026-06-12, `meta.n_days` = 6215 |
 | (removed 2026-11-01) "as traded" row = `kpis.live_exec` — a backtest of the v4.2 executable sizing, not a live record; dropped from the page so no backtest reads as live | — | same | still in `_helm_v6.json` (`kpi.live_exec`, `livefinal`, `m[].live`) for the record, not drawn |
-| Live record block | "pending" | no artifact yet — the forward record (`GET /api/account/forward`, built, not deployed) will feed it once long enough | — |
+| Live record block | fetched at page load from `https://storage.googleapis.com/helmfinances-public/live_record.json` (static "pending" text when the fetch fails) | written daily by the strategy job, pipeline stage `live_record` (`peadlab.automation.live_record`), from the owner's forward record `GET /api/account/forward` (`api/account.py: forward_record`) — see the "Live record fields" table below | `schema` = `helm-live-record/1` |
 | RSI(2) retirement gate "P(ΔSortino>0) 17 %" | 16.9 % | same | `gate.keep_sleeve.P_dSortino_gt0_pct` |
 | Vol-dial definition, metric definitions | — | same | `definitions.*` (also `docs/GLOSSARY.md`) |
 | Exposure "63 % avg" (model-state chip) | 0.633 | `artifacts/results/helm_sector_hedge.json` | `hedge.unhedged.mean_dial_exposure` |
@@ -41,11 +41,32 @@ from Yahoo Finance), then paste it over the `window.HELM=` line in `index.html`.
 | Short hedge dropped 2026-06 (look-ahead artifact) | — | `docs/research/LOOKAHEAD_REMEDIATION.md`, `docs/MODEL_CARD.md` | — |
 | Papers in "The science" | — | `docs/research/` PDFs named on the page | — |
 
+## Live record fields (`live_record.json`, public, NON-identifying — no NAV, currency, broker, account or user)
+
+Rendered only when `long_enough` is true; before that the block shows `months_live` and stays "pending". The
+"NOT A BACKTEST" label and the `as_of` date are always shown. Returns are time-weighted (TWR): the chain-linked
+daily NAV growth with the broker-reported deposits/withdrawals removed end-of-day (`api/returns.py: twr_index`).
+
+| Field | Meaning | Source |
+|---|---|---|
+| `as_of` | last day of the record (the latest day with both an account snapshot and a model close) | `forward.end` |
+| `live_since` | the live promotion date the record is rebased at | `forward.since` (`LivePointer.since`, scope US-prod) |
+| `months_live` | `(as_of − live_since) / 30.4375 days`, 1 decimal | computed in the stage |
+| `min_years`, `long_enough` | the bar before any return is shown: `months_live ≥ 12 · min_years`; `min_years` = job env `LIVE_RECORD_MIN_YEARS`, default 6 | `docs/research/CRITICAL_QUANT_REVIEW.md` CQ-5 ("≥ 6 years") |
+| `available` | false until there are ≥ 2 days with both a snapshot and a model close | `forward.available` |
+| `account_twr_pct` | account flow-adjusted TWR since `live_since`, % | `forward.account_pct` |
+| `model_twr_pct` | the executable model curve (`production_equity.csv` column `v21`, USD, gross of fees) over the same days, % | `forward.model_pct` |
+| `invested_share` | mean over the window of `AccountSnapshot.invested / value` (days with both > 0), 0–1 | `forward.invested_share` |
+| `worst_dd_pct` | worst peak-to-trough fall of the account TWR index over the window, % (≤ 0) | `forward.worst_dd_pct` |
+| `n_days` | trading days in the record | `forward.n` |
+| `flows_adjusted` | whether the broker reported flows (false ⇒ the account return is a naive chain) | `forward.flows_adjusted` |
+| `version` | the promoted model version string | `forward.version` |
+
 ## Caveats carried on the page (and where they come from)
 - **Hindsight universe** — the 20 names are today's mega-caps (MODEL_CARD F3; `pead_dial_candidate.json` `caveats[3]`).
 - **In-sample dial** — the 8 % target was picked on the same history (`caveats[1]`).
 - **Gross of fees** — no commission/slippage in the curves (CRITICAL_QUANT_REVIEW CQ-4).
-- **Backtest ≠ live** — the page carries no live number; the Live-record block stays "pending" until the forward record is long enough (`caveats[0]`, CQ-5).
+- **Backtest ≠ live** — the Live-record block shows a live number only once `long_enough` (≥ `min_years`, default 6, CQ-5); until then "pending" + months live (`caveats[0]`).
 - **Not market-neutral** — beta ≈ 0.66; crisis losses are the beta leg (`helm_sector_hedge.json`, `docs/research/CRISIS_ANATOMY.md`).
 
 Illustrative mock-ups (gate chain, model state, drift timeline) carry an explicit "illustrative" label and are not data.

@@ -521,20 +521,44 @@ a{color:inherit;}
         <p style="margin:12px 4px 0; font-size:11px; color:#5d6673; line-height:1.5; text-wrap:pretty;">Backtest, Oct 2001 &rarr; Jun 2026: Helm v6 (PEAD alone, 8% dial) vs SPY total return. Lower panel = drawdown; crisis depths are read off month-end points, so they understate the daily worst falls (Helm −15.6%, S&amp;P −55.2%). Gross of fees. Figures are <strong style="color:#8b949e; font-weight:600;">backtested, not a forecast</strong>.</p>
       </figure>
 
-      <!-- live record — deliberately separate from every backtest -->
-      <div style="margin-top:16px; display:flex; gap:18px; flex-wrap:wrap; align-items:stretch; background:#11161f; border:1px solid #1f2630; border-radius:16px; padding:20px 22px;">
+      <!-- live record — deliberately separate from every backtest. Filled by #liveRecord script from
+           live_record.json (written daily by the strategy job, pipeline stage `live_record`); the static
+           text below is what shows when the fetch fails. -->
+      <div id="liveRecord" data-source="live_record.json" style="margin-top:16px; display:flex; gap:18px; flex-wrap:wrap; align-items:stretch; background:#11161f; border:1px solid #1f2630; border-radius:16px; padding:20px 22px;">
         <div style="flex:1 1 300px; min-width:0;">
-          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;">
             <span style="font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:#8b949e;">Live record</span>
             <span style="font-size:10px; font-weight:700; letter-spacing:0.05em; color:#8b949e; background:#0e131b; border:1px solid #2a3340; padding:3px 8px; border-radius:999px;">NOT A BACKTEST</span>
+            <span id="liveRecAsOf" style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:10.5px; color:#5d6673;"></span>
           </div>
-          <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:28px; font-weight:600; color:#e6edf3; line-height:1.1;">pending</div>
-          <p style="margin:10px 0 0; font-size:13px; line-height:1.55; color:#8b949e; text-wrap:pretty;">Helm trades daily in a demo account. The forward record &mdash; the account's own return against the model since the v6 promotion &mdash; will be published here once it is long enough to mean anything. Today it is months, not years; a backtest like the one above needs <strong style="color:#c8d2dc; font-weight:600;">six or more years</strong> of live data to be confirmed or refuted.</p>
+          <div id="liveRecHead" style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:28px; font-weight:600; color:#e6edf3; line-height:1.1;">pending</div>
+          <p id="liveRecText" style="margin:10px 0 0; font-size:13px; line-height:1.55; color:#8b949e; text-wrap:pretty;">Helm trades daily in a demo account. The forward record &mdash; the account's own return against the model since the v6 promotion &mdash; will be published here once it is long enough to mean anything. Today it is months, not years; a backtest like the one above needs <strong style="color:#c8d2dc; font-weight:600;">six or more years</strong> of live data to be confirmed or refuted.</p>
         </div>
-        <div style="flex:0 1 300px; min-width:0; border-left:1px solid #1f2630; padding-left:18px; font-size:12px; line-height:1.6; color:#5d6673;">
+        <div id="liveRecSide" style="flex:0 1 300px; min-width:0; border-left:1px solid #1f2630; padding-left:18px; font-size:12px; line-height:1.6; color:#5d6673;">
           What will appear: months live &middot; account return vs model &middot; share of capital invested &middot; worst fall so far. Nothing on this page is a live result until this box says so.
         </div>
       </div>
+      <script>/* Live record: fetch the job's public JSON; render numbers ONLY when long_enough, else months live + pending.
+         Any failure leaves the static "pending" text untouched. Fields: landing/SOURCES.md "Live record". */
+      (function(){
+        var URL="https://storage.googleapis.com/helmfinances-public/live_record.json";
+        function txt(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; }
+        function pct(v){ return v==null?"n/a":((v>=0?"+":"")+Number(v).toFixed(1)+"%"); }
+        if(!window.fetch) return;
+        fetch(URL,{cache:"no-store"}).then(function(r){ return r.ok?r.json():null; }).then(function(d){
+          if(!d||d.schema!=="helm-live-record/1"||!d.as_of) return;
+          txt("liveRecAsOf","as of "+d.as_of);
+          var m=d.months_live, yrs=d.min_years||6, need=Math.round(12*yrs);
+          if(d.long_enough&&d.available){
+            txt("liveRecHead",pct(d.account_twr_pct)+" account \u00b7 "+pct(d.model_twr_pct)+" model");
+            txt("liveRecText","Demo account since "+d.live_since+" ("+m+" months, "+d.n_days+" trading days): flow-adjusted time-weighted return of the account vs the executable model on the same days, both rebased at the promotion. Gross of fees on the model side; the account is net."+(d.flows_adjusted?"":" Deposits/withdrawals not reported by the broker, so the account return is not flow-adjusted."));
+            txt("liveRecSide","Share of capital invested: "+(d.invested_share==null?"n/a":Math.round(100*d.invested_share)+"% (average)")+" \u00b7 worst fall so far: "+pct(d.worst_dd_pct)+" \u00b7 model "+(d.version||"")+". Live, not a backtest; "+yrs+"+ years was the bar to show this (CQ-5).");
+          } else {
+            txt("liveRecHead", m==null?"pending":"pending \u00b7 "+m+" months live");
+            if(m!=null) txt("liveRecSide","Live for "+m+" of the "+need+" months ("+yrs+" years) needed before the record is shown here. Until then: months live only, no returns \u2014 a few months of P&L cannot confirm or refute the backtest above.");
+          }
+        }).catch(function(){});
+      })();</script>
     </section>
 
     <!-- ===================== SCIENCE / LITERATURE ===================== -->
