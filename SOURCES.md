@@ -13,15 +13,14 @@ from Yahoo Finance), then paste it over the `window.HELM=` line in `index.html`.
 | Helm v6 max drawdown | −15.6 % | same | `kpis.pead_d08.maxdd` |
 | Helm v6 Calmar | 0.71 | same | `kpis.pead_d08.calmar` |
 | Window | Oct 2001 → Jun 2026 | same | `meta.sample` = 2001-10-01 .. 2026-06-12, `meta.n_days` = 6215 |
-| As-traded CAGR / Sharpe / Sortino / maxDD / Calmar | 5.9 % / 1.21 / 1.75 / −9.8 % / 0.60 | same | `kpis.live_exec.*` (backtest of the executable sizing 10 % × w_PEAD × dial) |
-| "~34 % invested" | 34.2 % | same | `live_exec_exposure.gross_mean` = 0.342 |
-| "roughly doubles the invested share" | — | same | `caveats[5]` |
+| (removed 2026-11-01) "as traded" row = `kpis.live_exec` — a backtest of the v4.2 executable sizing, not a live record; dropped from the page so no backtest reads as live | — | same | still in `_helm_v6.json` (`kpi.live_exec`, `livefinal`, `m[].live`) for the record, not drawn |
+| Live record block | "pending" | no artifact yet — the forward record (`GET /api/account/forward`, built, not deployed) will feed it once long enough | — |
 | RSI(2) retirement gate "P(ΔSortino>0) 17 %" | 16.9 % | same | `gate.keep_sleeve.P_dSortino_gt0_pct` |
 | Vol-dial definition, metric definitions | — | same | `definitions.*` (also `docs/GLOSSARY.md`) |
 | Exposure "63 % avg" (model-state chip) | 0.633 | `artifacts/results/helm_sector_hedge.json` | `hedge.unhedged.mean_dial_exposure` |
 | Beta to S&P ≈ 0.66 | 0.663 | same | `hedge.unhedged.undialed_beta_to_spy` |
 | S&P 500 CAGR / Sharpe / Sortino / maxDD / Calmar | 10.1 % / 0.60 / 0.86 / −55.2 % / 0.18 | computed by `research/export_landing_data.py` via `peadlab.benchmark.benchmark_curve` (SPY total return, same price lake, identical window) | `landing/_helm_v6.json` → `kpi.spy` |
-| Growth of $10k: Helm v6 / S&P / as traded | $131,121 / $107,681 / $41,061 | `landing/_helm_v6.json` | `v4final` / `spfinal` / `livefinal` (month-end points of the weekly artifact curves `curves.pead_d08`, `curves.live_exec`) |
+| Growth of $10k: Helm v6 / S&P | $131,121 / $107,681 | `landing/_helm_v6.json` | `v4final` / `spfinal` / `livefinal` (month-end points of the weekly artifact curves `curves.pead_d08`, `curves.live_exec`) |
 | Crisis depths on the chart | Dot-com −7.0 / −27.9, GFC −13.1 / −50.5, COVID −1.2 / −21.0, 2022 −7.5 / −23.9 | `landing/_helm_v6.json` | `crises[]` — read off month-end points, so shallower than the daily maxDD |
 | Nasdaq-100 (QQQ) | 14.3 % / 0.70 / 1.00 / −53.4 % | Yahoo Finance auto-adjusted close via `yfinance`, identical window, same formulas (`research/export_landing_data.py`) | `landing/_helm_v6.json` → `bench.QQQ` |
 | 60/40 (VFINX / VBMFX, monthly rebalanced) | 7.6 % / 0.72 / 1.02 / −35.8 % | same | `bench.60/40` |
@@ -46,7 +45,7 @@ from Yahoo Finance), then paste it over the `window.HELM=` line in `index.html`.
 - **Hindsight universe** — the 20 names are today's mega-caps (MODEL_CARD F3; `pead_dial_candidate.json` `caveats[3]`).
 - **In-sample dial** — the 8 % target was picked on the same history (`caveats[1]`).
 - **Gross of fees** — no commission/slippage in the curves (CRITICAL_QUANT_REVIEW CQ-4).
-- **Backtest ≠ live** — the as-traded row is itself a backtest of the live sizing, not a broker statement; the live demo record is too short to confirm anything (`caveats[0]`, CQ-5).
+- **Backtest ≠ live** — the page carries no live number; the Live-record block stays "pending" until the forward record is long enough (`caveats[0]`, CQ-5).
 - **Not market-neutral** — beta ≈ 0.66; crisis losses are the beta leg (`helm_sector_hedge.json`, `docs/research/CRISIS_ANATOMY.md`).
 
 Illustrative mock-ups (gate chain, model state, drift timeline) carry an explicit "illustrative" label and are not data.
