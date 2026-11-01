@@ -2,8 +2,8 @@
 
 All Helm figures are **backtests, gross of fees**, on one window, read from research artifacts in the
 private strategy repo (`pead-strategy`). Nothing on the page is typed from memory. Regenerate the chart data
-with `research/export_landing_data.py` (writes `landing/_helm_v6.json`), then paste it over the
-`window.HELM=` line in `index.html`.
+with `research/export_landing_data.py` (writes `landing/_helm_v6.json`, incl. the public-benchmark rows fetched
+from Yahoo Finance), then paste it over the `window.HELM=` line in `index.html`.
 
 | Number on the page | Value | Artifact / source | Field |
 |---|---|---|---|
@@ -23,6 +23,17 @@ with `research/export_landing_data.py` (writes `landing/_helm_v6.json`), then pa
 | S&P 500 CAGR / Sharpe / Sortino / maxDD / Calmar | 10.1 % / 0.60 / 0.86 / −55.2 % / 0.18 | computed by `research/export_landing_data.py` via `peadlab.benchmark.benchmark_curve` (SPY total return, same price lake, identical window) | `landing/_helm_v6.json` → `kpi.spy` |
 | Growth of $10k: Helm v6 / S&P / as traded | $131,121 / $107,681 / $41,061 | `landing/_helm_v6.json` | `v4final` / `spfinal` / `livefinal` (month-end points of the weekly artifact curves `curves.pead_d08`, `curves.live_exec`) |
 | Crisis depths on the chart | Dot-com −7.0 / −27.9, GFC −13.1 / −50.5, COVID −1.2 / −21.0, 2022 −7.5 / −23.9 | `landing/_helm_v6.json` | `crises[]` — read off month-end points, so shallower than the daily maxDD |
+| Nasdaq-100 (QQQ) | 14.3 % / 0.70 / 1.00 / −53.4 % | Yahoo Finance auto-adjusted close via `yfinance`, identical window, same formulas (`research/export_landing_data.py`) | `landing/_helm_v6.json` → `bench.QQQ` |
+| 60/40 (VFINX / VBMFX, monthly rebalanced) | 7.6 % / 0.72 / 1.02 / −35.8 % | same | `bench.60/40` |
+| US bonds (Vanguard Total Bond, VBMFX) | 3.3 % / 0.74 / 1.09 / −18.8 % | same (VBMFX chosen because AGG starts 2003-09) | `bench.VBMFX` |
+| Berkshire Hathaway (BRK-B, price only) | 9.9 % / 0.56 / 0.83 / −53.9 % | same | `bench.BRK-B` |
+| Russell 2000 (IWM) | 9.7 % / 0.51 / 0.72 / −58.6 % | same | `bench.IWM` |
+| Developed ex-US (EFA) | 7.0 % / 0.43 / 0.60 / −61.0 % | same | `bench.EFA` |
+| Cross-check: VFINX (S&P 500 fund) vs the lake's SPY | 10.1 / 0.60 / 0.85 / −55.3 vs 10.1 / 0.60 / 0.86 / −55.2 | same | `bench.VFINX` — the two data sources agree to 0.1 pp |
+| Medallion: 66 % gross / 39 % net avg per year, 1988–2018, no negative gross year | reported | Cornell, *Medallion Fund: The Ultimate Counterexample?* (Dec 2019), via [Institutional Investor, 2020-01-26](https://www.institutionalinvestor.com/article/2bswymr8cih3jeaslxc00/portfolio/famed-medallion-fund-stretches-explanation-to-the-limit-professor-claims) (66 % gross, 1988–2018, no negative gross year) and [CXO Advisory's summary](https://www.cxoadvisory.com/?p=33535) (39.2 % net) | not comparable; shown in the "reported elsewhere" strip only |
+| Medallion dispute: "< 35 % compounded before fees" | reported | [Guo & Liu 2024, arXiv:2405.10917](https://arxiv.org/abs/2405.10917) | same strip |
+| Berkshire Sharpe 0.79 (full public history) | reported | Frazzini, Kabiller & Pedersen, *Buffett's Alpha*, Financial Analysts Journal 74(4), 2018, [doi:10.2469/faj.v74.n4.3](https://doi.org/10.2469/faj.v74.n4.3) (abstract) | same strip; AQR's summary page quotes 0.76 — the abstract figure is used |
+| Hedge-fund index (HFRI) | — | omitted: since-inception statistics are licensed HFR data, not freely citable | — |
 | Planning band: Sharpe 0.5–0.8, CAGR 4–7 % net, Sortino 0.8–1.2, maxDD −25…−30 %, ≥ 6 y to confirm | — | `docs/research/CRITICAL_QUANT_REVIEW.md` §4 | table "Honest forward expectations" |
 | Fee drag "~1.3 %/yr" | — | same | CQ-4 |
 | "mega-cap book Sharpe ~1.1 vs full S&P ~0.4" (hindsight universe) | — | `docs/MODEL_CARD.md` | failure mode F3 |
